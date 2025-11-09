@@ -1,0 +1,65 @@
+body{
+  margin: 0;
+  display: flex;
+  justify-content: center; /* centraliza horizontalmente */
+  align-items: center;     /* centraliza verticalmente */
+  flex-direction: column;
+  background-color: #f0f0f0; /* opcional, só pra destacar */
+  font-family: 'Poppins', sans-serif; /* aplica a fonte */
+  gap: 0px;
+}
+:root {
+  --marrom-logo: #9B6230;
+}
+.container-principal{
+    background-color: white;
+    padding: 40px 40px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* sombra leve opcional */
+    margin-top: 0px;
+    gap: 10px;
+}
+img{
+    width: 150px;
+    height: 200px;
+    margin-bottom: 0; /* garante que a imagem não adicione espaço extra */
+}
+.container-principal h1{
+    color: var(--marrom-logo);
+}
+.container-principal form{
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--marrom-logo);
+    gap: 10px;
+}
+.container-principal form label {
+    text-align: center;
+    display: block;
+    margin-bottom: 0px;
+}
+.container-principal input{
+    border-radius: 20px;
+    padding: 12px;
+    border-style: solid;
+    border-color: var(--marrom-logo)
+}
+.container-principal input[type="submit"]{
+    border-style: none;
+    background-color: var(--marrom-logo);
+    color: white;
+    margin-top: 25px;
+    font-size: 15px;
+    font-weight: 900;
+}
+.container-principal a{
+    text-decoration: none;
+    color: var(--marrom-logo);
+    align-self: center;
+    margin-top: 5px;
+}
