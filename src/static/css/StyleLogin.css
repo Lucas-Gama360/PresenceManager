@@ -27,8 +27,9 @@ img{
     height: 200px;
     margin-bottom: 0; /* garante que a imagem não adicione espaço extra */
 }
-.container-principal h1{
+.container-principal h1{cd
     color: var(--marrom-logo);
+    font-weight: 900;
 }
 .container-principal form{
     display: flex;
@@ -48,6 +49,9 @@ img{
     padding: 12px;
     border-style: solid;
     border-color: var(--marrom-logo)
+}
+.container-principal input:hover{
+    border-color: #9b6230a1;
 }
 .container-principal input[type="submit"]{
     border-style: none;
