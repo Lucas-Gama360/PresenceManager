@@ -27,7 +27,7 @@ img{
     height: 200px;
     margin-bottom: 0; /* garante que a imagem não adicione espaço extra */
 }
-.container-principal h1{cd
+.container-principal h1{
     color: var(--marrom-logo);
     font-weight: 900;
 }
