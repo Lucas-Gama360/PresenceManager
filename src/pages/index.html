@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="src/static/css/StyleLogin.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/StyleLogin.css') }}" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <img src="src/static/images/logocrisma.png" alt="Logo da Crisma">  
+    <img src="{{ url_for('static', filename='images/logocrisma.png')}}" alt="Logo da Crisma">  
     <div class="container-principal">
         <h1>Chamada da crisma</h1>
         <form name="form1">
@@ -21,7 +21,7 @@
 
             <input type="submit" value="Entrar">
         </form>
-        <a href="src/pages/CreateAccount.html">Criar Conta</a>
+        <a href="{{ url_for('register_page') }}">Criar Conta</a>
     </div>
 </body>
 </html>

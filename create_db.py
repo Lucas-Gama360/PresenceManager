@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 # Caminho do banco de dados dentro da pasta "data"
-db_path = os.path.join("data", "database.db")
+db_path = os.path.join("src", "data", "database.db")
 #cria conexão com banco de dados, caso ele nao exista será criado
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
