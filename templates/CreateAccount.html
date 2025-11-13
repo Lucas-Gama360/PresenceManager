@@ -7,23 +7,43 @@
     <link rel="stylesheet" href="../static/css/StyleLogin.css">
 </head>
 <body>
+
     <img src="../static/images/logocrisma.png" alt="Logo da Crisma">  
     <div class="container-principal">
         <h1>Chamada da crisma</h1>
-        <form name="form1" method="post" action="{{ url_for('register_user') }}">
+        <!-- # no action envia para a própia pagina em caso de erro "não acontece nada no caso" -->
+         <!-- o post so está ai para semântica -->
+        <form name="form1" method="post" action="#">
 
             <label for="nome"> Criar Usuário</label>
             <input type="text" name="nome" placeholder="Digite o nome do novo Usuário" required>
 
             <label for="senha">Criar Senha</label>
             <input type="password" name="senha" placeholder="Crie uma senha" required>
+            <!-- o EVENT fala pro html para não executar o action que o js vai assumir daqui pra frente -->
+            <!-- no js eu defino valores para inputs ocultos e ai sim envio para o servidor para ele poder trabalhar -->
+            <!-- dessa forma eu envio tudo junto: username, paswword e senhamestre digitadas pelo usuário -->
+            <button type="submit" onclick="Openmodalmasterpassword(event)">Criar Conta(Protegido)</button>
 
-            <input type="submit" value="Criar">
         </form>
             {% if request.args.get('msg') %}
-            <div class="erro" role="alert">{{ request.args.get('msg') }}</div>
+            <div class="mensagem" role="alert">{{ request.args.get('msg') }}</div>
             {% endif %}
         <a href="{{ url_for('index') }}">Retornar a Página de Login</a>
     </div>
+
+    <dialog id="modalcreateaccount">
+        <form name="form-modal" method="post" action="{{ url_for('register_user') }}">
+            <label for="senha-mestre">Digite a senha mestre:</label>
+            <input type="password" name="senha-mestre">
+            <input type="submit" value="Criar Conta">
+             <!-- Campos ocultos para transferir os dados do formulário principal -->
+            <input type="hidden" name="nome" id="modal-nome">
+            <input type="hidden" name="senha" id="modal-senha">
+        </form>
+        <button onclick="Closemodalmasterpassword()">Fechar</button>
+    </dialog>
+
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
 </body>
 </html>

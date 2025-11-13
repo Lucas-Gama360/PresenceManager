@@ -62,6 +62,17 @@ img{
     font-size: 15px;
     font-weight: 900;
 }
+.container-principal button{
+    border-style: none;
+    background-color: var(--marrom-logo);
+    border-radius: 20px;
+    padding: 12px;
+    border-style: none;
+    color: white;
+    margin-top: 25px;
+    font-size: 15px;
+    font-weight: 900;
+}
 .container-principal a{
     text-decoration: none;
     color: var(--marrom-logo);
