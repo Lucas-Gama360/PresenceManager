@@ -8,9 +8,7 @@ def get_conn():
     return conn
 
 # Define que os templates estão na pasta "pages"
-app = Flask(__name__, 
-            template_folder="src/pages",
-            static_folder="src/static")
+app = Flask(__name__)
 
 
 #====================================
@@ -25,13 +23,18 @@ def register_page():
     """Página de cadastro"""
     return render_template('CreateAccount.html')
 
+@app.get('/homepage')
+def home_page():
+    """Página de cadastro"""
+    return render_template('homepage.html')
+
 #====================================
 # ROTA NOVOS USUÁRIOS
 #====================================
-@app.route('/register_user', methods=['POST'])
+@app.post('/register_user')
 def register_user():
     """Cria uma nova conta de usuário"""
-    username = request.form.get('nome', '').strip()
+    username = request.form.get('nome', '').strip() #strip retira o espaço do input
     password = request.form.get('senha', '').strip()
     try:
         # Adiciona novo usuário
@@ -45,7 +48,36 @@ def register_user():
         conn.close()
 
     return redirect(url_for('index'))
+#====================================
+# ROTA LOGIN DE USUÁRIOS
+#====================================
+@app.post('/login')
+def login_user():
+    """Pega as informações dos inputs"""
+    username = request.form.get('nome', '').strip()
+    password = request.form.get('senha', '').strip()
+
+    with get_conn() as conn:
+        
+        cur = conn.cursor()
+
+        cur.execute("SELECT username, password FROM users WHERE username = ? AND password = ?", (username, password))
+        user = cur.fetchone()
+
+        if user is None:
+            return redirect(url_for('index', msg1='Usuário não encontrado'))
+        
+        return redirect(url_for('home_page'))
+    
+
+    
 
 
+
+
+
+
+
+    
 if __name__ == "__main__":
     app.run(debug=True)

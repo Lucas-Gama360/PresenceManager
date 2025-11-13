@@ -20,6 +20,9 @@
 
             <input type="submit" value="Criar">
         </form>
+            {% if request.args.get('msg') %}
+            <div class="erro" role="alert">{{ request.args.get('msg') }}</div>
+            {% endif %}
         <a href="{{ url_for('index') }}">Retornar a Página de Login</a>
     </div>
 </body>

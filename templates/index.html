@@ -11,7 +11,7 @@
     <img src="{{ url_for('static', filename='images/logocrisma.png')}}" alt="Logo da Crisma">  
     <div class="container-principal">
         <h1>Chamada da crisma</h1>
-        <form name="form1">
+        <form name="form1" action="{{ url_for('login_user') }}" method="post">
 
             <label for="nome">Usuário</label>
             <input type="text" name="nome" placeholder="Digite o nome Cadastrado" required>
@@ -21,6 +21,9 @@
 
             <input type="submit" value="Entrar">
         </form>
+            {% if request.args.get('msg1') %}
+            <div class="errologin" role="alert">{{ request.args.get('msg1') }}</div>
+            {% endif %}
         <a href="{{ url_for('register_page') }}">Criar Conta</a>
     </div>
 </body>
