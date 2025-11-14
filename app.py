@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 import os
 
 def get_conn(): 
@@ -11,6 +11,7 @@ def get_conn():
 app = Flask(__name__)
 #define senha mestre
 MASTER_PASSWORD =   "sfcrisma"
+app.config['SECRET_KEY'] = 'ufw$hR!o&b|vtP%3' # Adicionar chave secreta para sessões
 
 
 #====================================
@@ -50,7 +51,7 @@ def register_user():
             return redirect(url_for('register_page', msg='Usuário e/ou e-mail já cadastrados.'))
         finally:
             conn.close()
-            return redirect(url_for('index'))
+        return redirect(url_for('index'))
     else: #A senha mestre logicamente está inocrreta
         return redirect(url_for('register_page', msg='A senha mestre digitada está incorreta. Não foi possível criar a conta'))
 #====================================
@@ -66,13 +67,21 @@ def login_user():
         
         cur = conn.cursor()
 
-        cur.execute("SELECT username, password FROM users WHERE username = ? AND password = ?", (username, password))
+        cur.execute("SELECT  id, username, password, is_admin FROM users WHERE username = ? AND password = ?", (username, password))
         user = cur.fetchone()
-
         if user is None:
             return redirect(url_for('index', msg1='Usuário não encontrado'))
-        
+
+        user_id, username, password_db, is_admin = user
+        # Salva na sessão, e ai usando JINJA Eu configuro o html do home page pro admin
+        # A sessão no Flask é um mecanismo que armazena dados temporários do usuário entre requisições, usando um cookie criptografado chamado session. Quando o usuário faz login, o Flask salva informações (como ID e nome)
+        # eu posso utilizar os dados da sessão novamente se necessário
+        session['id'] = user_id
+        session['username'] = username
+        session['is_admin'] = True if is_admin == 1 else False
+
         return redirect(url_for('home_page'))
+
     
 
     

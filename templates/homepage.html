@@ -6,6 +6,19 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>olá</h1>
+
+
+
+
+
+
+
+
     
+    <!-- aq usnado JINJA eu renderizo a parte do administrador -->
+    {% if session.get('is_admin') %}
+    <a href="/admin">Painel do Administrador</a>
+    {% endif %}
 </body>
 </html>
