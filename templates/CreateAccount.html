@@ -34,8 +34,8 @@
 
     <dialog id="modalcreateaccount">
         <form name="form-modal" method="post" action="{{ url_for('register_user') }}">
-            <label for="senha-mestre">Digite a senha mestre:</label>
-            <input type="password" name="senha-mestre">
+            <label for="senha-mestre"><h2>Digite a senha mestre:</h2></label>
+            <input type="password" name="senha-mestre" id="senha-mestre" placeholder="Digite a senha mestre">
             <input type="submit" value="Criar Conta">
              <!-- Campos ocultos para transferir os dados do formulário principal -->
             <input type="hidden" name="nome" id="modal-nome">

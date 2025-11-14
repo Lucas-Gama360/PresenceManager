@@ -1,6 +1,7 @@
 body{
   margin: 0;
   display: flex;
+  height: 100vh;
   justify-content: center; /* centraliza horizontalmente */
   align-items: center;     /* centraliza verticalmente */
   background-color: #f0f0f0; /* opcional, só pra destacar */
@@ -78,6 +79,88 @@ img{
     color: var(--marrom-logo);
     align-self: center;
     margin-top: 5px;
+}
+/* ===== MODAL (dialog) ===== */
+#modalcreateaccount {
+    border: none;
+    padding: 0;
+    border-radius: 12px;
+    width: 350px;
+    max-width: 90%;
+    background: white;
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+    animation: abrirModal 0.25s ease-out;
+}
+
+/* Animação de abertura */
+@keyframes abrirModal {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fundo escurecido quando o modal abre */
+#modalcreateaccount::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* ===== Conteúdo interno do modal ===== */
+#modalcreateaccount form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 25px 30px 20px 30px;
+}
+
+#modalcreateaccount h2 {
+    margin: 0 0 5px;
+    font-size: 20px;
+    text-align: center;
+    color: var(--marrom-logo);
+}
+
+#modalcreateaccount input[type="password"] {
+    padding: 10px;
+    border: 1px solid var(--marrom-logo);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#modalcreateaccount input[type="submit"] {
+    background: var(--marrom-logo);
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#modalcreateaccount input[type="submit"]:hover {
+    background: #5c3c24; /* tom mais escuro */
+}
+
+/* ===== Botão Fechar ===== */
+#modalcreateaccount button {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    border-top: 1px solid #ddd;
+    background: #f7f7f7;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 0 0 12px 12px;
+}
+
+#modalcreateaccount button:hover {
+    background: #eee;
 }
 
 @media (max-width: 540px) {
