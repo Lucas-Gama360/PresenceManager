@@ -12,9 +12,9 @@ __pycache__/
 .idea/
 
 # Banco de dados local (SQLite)
-instance/
-*.db
-*.sqlite3
+#instance/
+#*.db
+#*.sqlite3
 
 # Configurações e variáveis de ambiente
 .env
