@@ -17,6 +17,49 @@ CREATE TABLE IF NOT EXISTS users (
     is_admin INTEGER NOT NULL DEFAULT 0 
 );
 """)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS crismandos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL,     
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP    
+);
+""")
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS classes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    class_name TEXT NOT NULL               
+);
+""")
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS crismando_class (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    crismando_id INTEGER NOT NULL,
+    class_id INTEGER NOT NULL ,
+    FOREIGN KEY (crismando_id) REFERENCES crismandos(id),
+    FOREIGN KEY (class_id) REFERENCES classes(id)
+);
+""")
+cursor.execute("""
+CREATE TABLE meetings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    class_id INTEGER NOT NULL,
+    date TEXT NOT NULL,
+    FOREIGN KEY (class_id) REFERENCES classes(id)
+);
+""")
+cursor.execute("""
+CREATE TABLE attendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    crismando_id INTEGER NOT NULL,
+    meeting_id INTEGER NOT NULL,
+    
+    -- 0 = falta | 1 = presente | 2 = justificada
+    status INTEGER NOT NULL CHECK (status IN (0, 1, 2)),
+    
+    FOREIGN KEY (crismando_id) REFERENCES crismandos(id),
+    FOREIGN KEY (meeting_id) REFERENCES meetings(id)
+);
+               """)
 # DEFAULT 0 é para sempre que um novo usuario for criado ele receber 0, já que só o admin recebe 1
 # Inserir usuário admin apenas se ainda não existir
 
