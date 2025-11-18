@@ -20,35 +20,26 @@ CREATE TABLE IF NOT EXISTS users (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS crismandos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE NOT NULL,     
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP    
+    name TEXT UNIQUE NOT NULL,
+    class_id INTEGER NOT NULL,    
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (class_id) REFERENCES classes(id)    
 );
 """)
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS classes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    class_name TEXT NOT NULL               
+    class_name TEXT NOT NULL                            
 );
 """)
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS crismando_class (
+CREATE TABLE IF NOT EXISTS meetings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    crismando_id INTEGER NOT NULL,
-    class_id INTEGER NOT NULL ,
-    FOREIGN KEY (crismando_id) REFERENCES crismandos(id),
-    FOREIGN KEY (class_id) REFERENCES classes(id)
+    date TEXT NOT NULL
 );
 """)
 cursor.execute("""
-CREATE TABLE meetings (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    class_id INTEGER NOT NULL,
-    date TEXT NOT NULL,
-    FOREIGN KEY (class_id) REFERENCES classes(id)
-);
-""")
-cursor.execute("""
-CREATE TABLE attendance (
+CREATE TABLE IF NOT EXISTS attendance (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     crismando_id INTEGER NOT NULL,
     meeting_id INTEGER NOT NULL,
@@ -59,7 +50,7 @@ CREATE TABLE attendance (
     FOREIGN KEY (crismando_id) REFERENCES crismandos(id),
     FOREIGN KEY (meeting_id) REFERENCES meetings(id)
 );
-               """)
+""")
 # DEFAULT 0 é para sempre que um novo usuario for criado ele receber 0, já que só o admin recebe 1
 # Inserir usuário admin apenas se ainda não existir
 

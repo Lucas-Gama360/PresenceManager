@@ -4,10 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/stylehomepage.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>olá</h1>
+    <div id="container-princial">
+    <!-- usando JINJA eu puxo o nome de usuario da sessão logada -->
+     <img src="{{url_for('static', filename='images/logocrisma.png')}}" alt="Logo da crisma" class="logo">
+    <h1 class="saudaçoes">Bem-Vindo {{ session.get('username') }}!</h1>
 
+    <!-- aq usnado JINJA eu renderizo a parte do administrador -->
+    {% if session.get('is_admin') %}
+    <h1>admin</h1>
+    {% endif %}
+    </div>
 
 
 
@@ -16,9 +26,6 @@
 
 
     
-    <!-- aq usnado JINJA eu renderizo a parte do administrador -->
-    {% if session.get('is_admin') %}
-    <a href="/admin">Painel do Administrador</a>
-    {% endif %}
+
 </body>
 </html>
