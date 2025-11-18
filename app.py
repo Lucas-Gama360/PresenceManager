@@ -29,6 +29,9 @@ def register_page():
 @app.get('/homepage')
 def home_page():
     """Página de cadastro"""
+    if 'loged_user' not in session :
+        return render_template("index.html")
+    
     return render_template('homepage.html')
 
 #====================================
@@ -67,25 +70,21 @@ def login_user():
         
         cur = conn.cursor()
 
-        cur.execute("SELECT  id, username, password, is_admin FROM users WHERE username = ? AND password = ?", (username, password))
+        cur.execute("SELECT username, password, is_admin FROM users WHERE username = ? AND password = ?", (username, password))
+        # user é a variavel que salva em formato de dicionario de python para ser possivel salvar sessões
         user = cur.fetchone()
         if user is None:
             return redirect(url_for('index', msg1='Usuário não encontrado'))
-
-        user_id, username, password_db, is_admin = user
+        
         # Salva na sessão, e ai usando JINJA Eu configuro o html do home page pro admin
         # A sessão no Flask é um mecanismo que armazena dados temporários do usuário entre requisições, usando um cookie criptografado chamado session. Quando o usuário faz login, o Flask salva informações (como ID e nome)
         # eu posso utilizar os dados da sessão novamente se necessário
-        session['id'] = user_id
-        session['username'] = username
-        session['is_admin'] = True if is_admin == 1 else False
+        # Aqui é configurado as sessões
+        session['loged_user'] = user['username']
+        session['admin'] = user['is_admin'] 
 
         return redirect(url_for('home_page'))
-
-    
-
-    
-
+        
 
 
 

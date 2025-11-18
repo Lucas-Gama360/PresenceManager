@@ -14,7 +14,7 @@
     <h1 class="saudaçoes">Bem-Vindo {{ session.get('username') }}!</h1>
 
     <!-- aq usnado JINJA eu renderizo a parte do administrador -->
-    {% if session.get('is_admin') %}
+    {% if session.get('is_admin == 1') %}
     <h1>admin</h1>
     {% endif %}
     </div>
