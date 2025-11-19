@@ -1,10 +1,62 @@
 body{
-margin: 0;
+margin: 50px 0px;
 display: flex;
 height: 100vh;
 justify-content: center; /* centraliza horizontalmente */
 background-color: #ffffff; /* opcional, só pra destacar */
 font-family: 'Poppins', sans-serif; /* aplica a fonte */
+}
+:root {
+  --marrom-logo: #9B6230;
+}
+header {
+  background-color: var(--marrom-logo);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+}
+.header-left img{
+    width: 100px;
+    height: auto;
+    margin-bottom: 0; /* garante que a imagem não adicione espaço extra */
+}
+
+.title-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 50px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.button-logout{
+    background-color: white;
+    color: var(--marrom-logo);
+    border-radius: 25px;
+    padding: 10px 20px;
+    border-style: solid;
+    border-color: #9B6230;
+    font-size: 30px;
+    font-weight: 600;
+}
+.button-logout:hover{
+    background-color: rgb(255, 11, 11);
+    color: white;
+    transform: scale(1.1);
 }
 .container-principal{
     display: flex;

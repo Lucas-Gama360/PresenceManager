@@ -84,11 +84,14 @@ def login_user():
         session['admin'] = user['is_admin'] 
 
         return redirect(url_for('home_page'))
-        
-
-
-
-
+#====================================
+# FUNÇÃO LOGOUT
+#====================================
+@app.post("/logout")
+def logout_user():
+    """Desloga o usuário"""
+    session.clear()
+    return render_template('index.html')
 
 
     

@@ -8,11 +8,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="container-princial">
-    <!-- usando JINJA eu puxo o nome de usuario da sessão logada -->
-     <img src="{{url_for('static', filename='images/logocrisma.png')}}" alt="Logo da crisma" class="logo">
-    <h1 class="saudaçoes">Bem-Vindo {{ session.get('username') }}!</h1>
+    <header>
+      <div class="header-left">
+        <!-- Logo da aplicação -->
+        <img src="{{url_for('static', filename='images/logocrismamaior.png')}}" alt="Logo da crisma" class="logo">
 
+        <!-- Título central que navega para /home -->
+        <h1 class="title-center">
+          Chamada da Crisma
+        </h1>
+      </div>
+      <form action="{{url_for('logout_user')}}" method="post">
+        <button class="button-logout">Sair</button>
+      </form>
+    </header>
+
+    <!-- usando JINJA eu puxo o nome de usuario da sessão logada -->
+    <div id="container-princial">
+    <h1 class="saudaçoes">Bem-Vindo {{ session.get('username') }}!</h1>
+    </div>
     <!-- aq usnado JINJA eu renderizo a parte do administrador -->
     {% if session.get('is_admin == 1') %}
     <h1>admin</h1>
