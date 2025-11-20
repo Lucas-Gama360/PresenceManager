@@ -1,45 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/stylehomepage.css')}}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página Principal</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/stylehomepage.css')}}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static', filename='images/faviconcrisma.ico')}}"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <header>
       <div class="header-left">
-        <!-- Logo da aplicação -->
-        <img src="{{url_for('static', filename='images/logocrismamaior.png')}}" alt="Logo da crisma" class="logo">
-
-        <!-- Título central que navega para /home -->
-        <h1 class="title-center">
-          Chamada da Crisma
-        </h1>
+        <img
+          src="{{url_for('static', filename='images/logocrismamaior.png')}}"
+          alt="Logo da crisma"
+          class="logo"
+        />
+        <h1 class="title-center">Chamada da Crisma</h1>
       </div>
       <form action="{{url_for('logout_user')}}" method="post">
         <button class="button-logout">Sair</button>
       </form>
     </header>
 
-    <!-- usando JINJA eu puxo o nome de usuario da sessão logada -->
-    <div id="container-princial">
-    <h1 class="saudaçoes">Bem-Vindo {{ session.get('username') }}!</h1>
+    <div class="container-principal">
+      <h1>Bem-Vindo {{ session.get('loged_user') }}!</h1>
+
+      <main class="dashboard">
+        <section class="cards-grid">
+          <!-- Card 1: Chamada Presença (todos veem) -->
+          <article class="card">
+            <h2>Chamada Presença</h2>
+            <p>Registre a presença dos crismandos nas reuniões.</p>
+            <a href="" class="btn">Acessar</a>
+          </article>
+
+          <!-- Card 2: Lista de Crismandos (todos veem) -->
+          <article class="card">
+            <h2>Lista de Crismandos</h2>
+            <p>Visualize, edite e gerencie os dados dos participantes.</p>
+            <a href="" class="btn">Acessar</a>
+          </article>
+
+          <!-- Card 3: Relatórios (todos veem) -->
+          <article class="card">
+            <h2>Relatórios</h2>
+            <p>Gere relatórios de frequência e progresso.</p>
+            <a href="" class="btn">Gerar</a>
+          </article>
+
+          
+          <!-- Usando JINJA a partir daqui é renderizada a parte do admin -->
+          {% if session.get('admin') == 1 %}
+          <!-- Card 4: Configurações (SÓ ADMIN) -->
+          <article class="card">
+            <h2>Configurações</h2>
+            <p>Gerencie usuários, turmas e dados da pastoral.</p>
+            <a href="" class="btn">Configurar</a>
+          </article>
+          {% endif %}
+        </section>
+      </main>
+
+
     </div>
-    <!-- aq usnado JINJA eu renderizo a parte do administrador -->
-    {% if session.get('is_admin == 1') %}
-    <h1>admin</h1>
-    {% endif %}
-    </div>
-
-
-
-
-
-
-
-    
-
-</body>
+  </body>
 </html>

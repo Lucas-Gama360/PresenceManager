@@ -1,10 +1,13 @@
 body{
 margin: 50px 0px;
-display: flex;
-height: 100vh;
-justify-content: center; /* centraliza horizontalmente */
 background-color: #ffffff; /* opcional, só pra destacar */
 font-family: 'Poppins', sans-serif; /* aplica a fonte */
+padding-top: 80px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 :root {
   --marrom-logo: #9B6230;
@@ -59,13 +62,144 @@ header {
     transform: scale(1.1);
 }
 .container-principal{
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    margin: 0;
+  display: flex;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  flex-direction: column;
 }
-.logo{
-    width: 250px;
+.container-principal h1{
+  color: var(--marrom-logo);
+  text-align: center;
+  font-size: 45px;
+  font-weight: 400;
+}
+/* Estilo base para o dashboard */
+.dashboard {
+  margin-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Grade responsiva de cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  justify-content: center;
+}
+
+/* Estilo de cada card */
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #eee;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(155, 98, 48, 0.15); /* sombra com tom do marrom da logo */
+}
+
+.card h2 {
+  color: var(--marrom-logo);
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.card p {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Botão dentro do card */
+.card .btn {
+  display: inline-block;
+  background-color: var(--marrom-logo);
+  color: white;
+  text-decoration: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.card .btn:hover {
+  background-color: #7a4d24;
+  text-decoration: none;
+}
+@media (max-width: 1100px){
+.title-center{
+  font-size: 30px
+}
+.container-principal h1{
+  font-size: 35px;
+}
+}
+/* Responsividade: em telas muito estreitas, força 1 coluna */
+@media (max-width: 540px) {
+  .container-principal h1{
+  font-size: 30px;
+}
+  .cards-grid {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+
+  .card {
+    padding: 20px 16px;
+  }
+
+  .card h2 {
+    font-size: 1.3rem;
+  }
+header {
+  background-color: var(--marrom-logo);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.header-left img{
+    width: 70px;
     height: auto;
     margin-bottom: 0; /* garante que a imagem não adicione espaço extra */
+}
+
+.title-center {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.button-logout{
+    background-color: white;
+    color: var(--marrom-logo);
+    border-radius: 25px;
+    padding: 8px 10px;
+    border-style: solid;
+    border-color: #9B6230;
+    font-size: 20px;
+    font-weight: 600;
+}
 }
