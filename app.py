@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = 'ufw$hR!o&b|vtP%3' # Adicionar chave secreta para ses
 
 
 #====================================
-# ROTAS PÁGINAS INICIAIS
+# ROTAS PÁGINAS 
 #====================================
 @app.route('/')
 def index():
@@ -33,7 +33,13 @@ def home_page():
         return render_template("index.html")
     
     return render_template('homepage.html')
-
+@app.get('/configpage')
+def config_page():
+    """Página de configurações(admin)"""
+    if 'admin' not in session :
+        return render_template('index.html')
+    else:
+        return render_template('configpage.html')
 #====================================
 # ROTA NOVOS USUÁRIOS
 #====================================

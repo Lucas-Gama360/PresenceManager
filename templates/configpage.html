@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Página Principal</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
     <link
       rel="stylesheet"
       href="{{url_for('static', filename='css/stylehomepage.css')}}"
@@ -17,8 +17,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-  </head>
-  <body>
+</head>
+<body>
     <header>
       <div class="header-left">
         <img
@@ -32,16 +32,14 @@
         <button class="button-logout">Sair</button>
       </form>
     </header>
-
     <div class="container-principal">
-      <h1>Bem-Vindo {{ session.get('loged_user') }}!</h1>
-
+    <h1>Configurações</h1>
       <main class="dashboard">
         <section class="cards-grid">
           <!-- Card 1: Chamada Presença (todos veem) -->
           <article class="card">
-            <h2>Chamada Presença</h2>
-            <p>Registre a presença dos crismandos nas reuniões.</p>
+            <h2>Adicionar Crimando</h2>
+            <p>Adicione ou retire um crismando</p>
             <a href="" class="btn">Acessar</a>
           </article>
 
@@ -58,21 +56,8 @@
             <p>Gere relatórios de frequência e progresso.</p>
             <a href="" class="btn">Gerar</a>
           </article>
-
-          
-          <!-- Usando JINJA a partir daqui é renderizada a parte do admin -->
-          {% if session.get('admin') == 1 %}
-          <!-- Card 4: Configurações (SÓ ADMIN) -->
-          <article class="card">
-            <h2>Configurações</h2>
-            <p>Gerencie usuários, turmas e dados da pastoral.</p>
-            <a href="{{ url_for('config_page')}}" class="btn">Configurar</a>
-          </article>
-          {% endif %}
         </section>
       </main>
 
-
-    </div>
-  </body>
+</body>
 </html>

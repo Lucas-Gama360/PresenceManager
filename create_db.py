@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS classes (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS meetings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date TEXT NOT NULL
+    date TEXT NOT NULL,
+    class_id INTEGER NOT NULL,
+    FOREIGN KEY (class_id) REFERENCES classes(id)
 );
 """)
 cursor.execute("""

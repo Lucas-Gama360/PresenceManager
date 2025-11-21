@@ -61,35 +61,36 @@ header {
     color: white;
     transform: scale(1.1);
 }
-.container-principal{
+.container-principal {
   display: flex;
-  justify-content: center;
-  font-family: 'Poppins', sans-serif;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* ← chave para centralizar verticalmente */
+  font-family: 'Poppins', sans-serif;
 }
-.container-principal h1{
+
+.container-principal h1 {
   color: var(--marrom-logo);
   text-align: center;
   font-size: 45px;
   font-weight: 400;
+  margin-bottom: 32px; /* espaçamento entre título e grid */
 }
 /* Estilo base para o dashboard */
 .dashboard {
   margin-top: 40px;
   padding-bottom: 40px;
 }
-
 /* Grade responsiva de cards */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
+  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
   padding: 0 20px;
-  justify-content: center;
 }
-
 /* Estilo de cada card */
 .card {
   background: white;
