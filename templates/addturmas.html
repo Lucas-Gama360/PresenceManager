@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar turmas</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styleconfigadmin.css')}}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static', filename='images/faviconcrisma.ico')}}"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+</head>
+<body>
+<header>
+      <div class="header-left">
+        <img
+          src="{{url_for('static', filename='images/logocrismamaior.png')}}"
+          alt="Logo da crisma"
+          class="logo"
+        />
+        <h1 class="title-center">Chamada da Crisma</h1>
+      </div>
+      <form action="{{url_for('logout_user')}}" method="post">
+        <button class="button-logout">Sair</button>
+      </form>
+    </header>
+
+<main>
+
+    <div class="container-principal">
+                <h2>Turmas Cadastradas</h2>
+            {% if turmas %}
+                <table class="tabela-turmas">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for turma in turmas %}
+                            <tr>
+                                <td>{{ turma.id }}</td>
+                                <td>{{ turma.turma_name }}</td>
+                                <td>
+                                    <!-- Formulário de Exclusão -->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Nenhuma turma cadastrada ainda.</p>
+            {% endif %}
+</main>
+</body>
+</html>

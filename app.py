@@ -91,6 +91,23 @@ def login_user():
 
         return redirect(url_for('home_page'))
 #====================================
+# ROTAS TURMAS(ADMIN)
+#====================================
+@app.get('/listturmas')
+def list_turmas():
+    """Página de edição de turma(admin)"""
+    if 'admin' not in session :
+        return render_template('index.html')
+    
+    with get_conn() as conn:
+        cur = conn.cursor()
+        # Busca todas as turmas e ordena por nome
+        cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
+        turmas = cur.fetchall()
+    
+    # 3. Renderiza o Template
+    return render_template('addturmas.html', turmas=turmas)
+#====================================
 # FUNÇÃO LOGOUT
 #====================================
 @app.post("/logout")

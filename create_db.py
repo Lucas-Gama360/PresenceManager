@@ -21,23 +21,23 @@ cursor.execute("""
 CREATE TABLE IF NOT EXISTS crismandos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE NOT NULL,
-    class_id INTEGER NOT NULL,    
+    turma_id INTEGER NOT NULL,    
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (class_id) REFERENCES classes(id)    
+    FOREIGN KEY (turma_id) REFERENCES turmas(id)    
 );
 """)
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS classes (
+CREATE TABLE IF NOT EXISTS turmas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    class_name TEXT NOT NULL                            
+    turma_name TEXT NOT NULL                            
 );
 """)
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS meetings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT NOT NULL,
-    class_id INTEGER NOT NULL,
-    FOREIGN KEY (class_id) REFERENCES classes(id)
+    turma_id INTEGER NOT NULL,
+    FOREIGN KEY (turma_id) REFERENCES turmas(id)
 );
 """)
 cursor.execute("""
@@ -59,6 +59,10 @@ CREATE TABLE IF NOT EXISTS attendance (
 cursor.execute("""
 INSERT OR IGNORE INTO users (username, password, is_admin)
 VALUES ('admin', 'sfcrisma_admin', 1);
+""")
+cursor.execute("""
+INSERT OR IGNORE INTO turmas (id, turma_name)
+VALUES ('1', 'teste');
 """)
 
 conn.commit()

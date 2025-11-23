@@ -1,0 +1,173 @@
+body{
+margin: 50px 0px;
+background-color: #ffffff; /* opcional, só pra destacar */
+font-family: 'Poppins', sans-serif; /* aplica a fonte */
+padding-top: 80px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --marrom-logo: #9B6230;
+}
+header {
+  background-color: var(--marrom-logo);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+}
+.header-left img{
+    width: 100px;
+    height: auto;
+    margin-bottom: 0; /* garante que a imagem não adicione espaço extra */
+}
+
+.title-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 50px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.button-logout{
+    background-color: white;
+    color: var(--marrom-logo);
+    border-radius: 25px;
+    padding: 10px 20px;
+    border-style: solid;
+    border-color: #9B6230;
+    font-size: 30px;
+    font-weight: 600;
+}
+.button-logout:hover{
+    background-color: rgb(255, 11, 11);
+    color: white;
+    transform: scale(1.1);
+}
+.container-principal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* ← chave para centralizar verticalmente */
+  font-family: 'Poppins', sans-serif;
+}
+@media (max-width: 540px) {
+header {
+  background-color: var(--marrom-logo);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.header-left img{
+    width: 70px;
+    height: auto;
+    margin-bottom: 0; /* garante que a imagem não adicione espaço extra */
+}
+
+.title-center {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.button-logout{
+    background-color: white;
+    color: var(--marrom-logo);
+    border-radius: 25px;
+    padding: 8px 10px;
+    border-style: solid;
+    border-color: #9B6230;
+    font-size: 20px;
+    font-weight: 600;
+}
+}
+/* Estilos para a Tabela de Turmas */
+.tabela-turmas {
+    width: 80%;
+    max-width: 800px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden; /* Para garantir que o border-radius funcione */
+}
+
+.tabela-turmas th, .tabela-turmas td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabela-turmas th {
+    background-color: var(--marrom-logo);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.tabela-turmas tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.tabela-turmas tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Estilo para o cabeçalho H2 */
+.container-principal h2 {
+    color: var(--marrom-logo);
+    margin-bottom: 15px;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+/* Estilo para o parágrafo de "Nenhuma turma cadastrada" */
+.container-principal p {
+    color: #666;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* Responsividade básica para a tabela */
+@media (max-width: 600px) {
+    .tabela-turmas {
+        width: 95%;
+    }
+    .tabela-turmas th, .tabela-turmas td {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+}
