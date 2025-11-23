@@ -15,3 +15,12 @@ function Closemodalmasterpassword(){
     const modal = document.getElementById("modalcreateaccount")
     modal.close();
 }
+
+function OpenModalTurmas(){
+    const modal = document.getElementById("modalturmas")
+    modal.showModal();
+}
+function CloseModalTurmas(){
+    const modal = document.getElementById("modalturmas")
+    modal.close(); 
+}

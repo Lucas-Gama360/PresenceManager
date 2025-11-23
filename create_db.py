@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS crismandos (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS turmas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    turma_name TEXT NOT NULL                            
+    turma_name TEXT NOT NULL UNIQUE                            
 );
 """)
 cursor.execute("""
@@ -59,10 +59,6 @@ CREATE TABLE IF NOT EXISTS attendance (
 cursor.execute("""
 INSERT OR IGNORE INTO users (username, password, is_admin)
 VALUES ('admin', 'sfcrisma_admin', 1);
-""")
-cursor.execute("""
-INSERT OR IGNORE INTO turmas (id, turma_name)
-VALUES ('1', 'teste');
 """)
 
 conn.commit()

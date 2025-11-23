@@ -160,7 +160,88 @@ header {
     font-style: italic;
     margin-top: 20px;
 }
+/* ===== MODAL (dialog) ===== */
+#modalturmas {
+    border: none;
+    padding: 0;
+    border-radius: 12px;
+    width: 350px;
+    max-width: 90%;
+    background: white;
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+    animation: abrirModal 0.25s ease-out;
+}
 
+/* Animação de abertura */
+@keyframes abrirModal {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fundo escurecido quando o modal abre */
+#modalturmas::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* ===== Conteúdo interno do modal ===== */
+#modalturmas form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 25px 30px 20px 30px;
+}
+
+#modalturmas h2 {
+    margin: 0 0 5px;
+    font-size: 20px;
+    text-align: center;
+    color: var(--marrom-logo);
+}
+
+#modalturmas input[type="password"] {
+    padding: 10px;
+    border: 1px solid var(--marrom-logo);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#modalturmas input[type="submit"] {
+    background: var(--marrom-logo);
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#modalturmas input[type="submit"]:hover {
+    background: #5c3c24; /* tom mais escuro */
+}
+
+/* ===== Botão Fechar ===== */
+#modalturmas button {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    border-top: 1px solid #ddd;
+    background: #f7f7f7;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 0 0 12px 12px;
+}
+
+#modalturmas button:hover {
+    background: #eee;
+}
 /* Responsividade básica para a tabela */
 @media (max-width: 600px) {
     .tabela-turmas {

@@ -98,7 +98,8 @@ def list_turmas():
     """Página de edição de turma(admin)"""
     if 'admin' not in session :
         return render_template('index.html')
-    
+    # puxa as msg das outras funções se eu tiver mandando, como na de deletar
+    msg = request.args.get('msg')
     with get_conn() as conn:
         cur = conn.cursor()
         # Busca todas as turmas e ordena por nome
@@ -106,7 +107,55 @@ def list_turmas():
         turmas = cur.fetchall()
     
     # 3. Renderiza o Template
-    return render_template('addturmas.html', turmas=turmas)
+    # passa pro jinja a variavel turmas recebendo tudo que tem na tabela de turmas
+    return render_template('addturmas.html', turmas=turmas, msgturmas=msg)
+
+@app.post('/deleteturma/<int:turma_id>/<nome>')
+def delete_turma(turma_id , nome):
+    if 'admin' not in session :
+        return render_template('index.html')
+    with get_conn() as conn:
+        cur = conn.cursor()
+            
+        # 1. Verificar se há crismandos vinculados
+        # cur.execute("SELECT COUNT(*) FROM crismandos WHERE turma_id = ?", (turma_id,))
+        # if cur.fetchone()[0] > 0:
+            # return redirect(url_for('list_turmas', msg='Erro: Não é possível excluir a turma. Existem crismandos vinculados a ela.'))
+                
+        # 2. Excluir a turma
+        cur.execute("DELETE FROM turmas WHERE id = ?", (turma_id,))
+        conn.commit()
+            
+        return redirect(url_for('list_turmas', msg=f'{nome} excluida com sucesso!'))
+
+@app.post("/creaturma")
+def create_turma():
+    if 'admin' not in session:
+        return redirect(url_for('index', msg='Acesso negado.'))
+
+    # 1. Captura o nome da turma e remove espaços em branco do início e do fim
+    turmaname = request.form.get('name', '').strip()
+
+    # 2. Verifica se o nome da turma está vazio após o strip()
+    if not turmaname:
+        # Se estiver vazio, redireciona de volta com uma mensagem de erro
+        return redirect(url_for('list_turmas', msg='Erro: O nome da turma não pode ser vazio.'))
+
+    # Se o nome for válido, prossegue com a inserção no banco de dados
+    try:
+        with get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute("INSERT INTO turmas (turma_name) VALUES (?)", (turmaname,))
+            conn.commit()
+            return redirect(url_for('list_turmas', msg=f'"{turmaname}" criada com sucesso!'))
+    # Se cair aqui, o nome já existe (violação do UNIQUE)
+    except sqlite3.IntegrityError:
+        return redirect(url_for('list_turmas',msg=f'Erro: A turma "{turmaname}" já existe.'))
+    # captura qualquer erro inesperado
+    except Exception as e:
+        return redirect(url_for('list_turmas',
+                                msg=f'Erro inesperado: {str(e)}'))
+
 #====================================
 # FUNÇÃO LOGOUT
 #====================================

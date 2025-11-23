@@ -32,35 +32,45 @@
         <button class="button-logout">Sair</button>
       </form>
     </header>
-
+<!-- No main é renderizado a tabela usando jinja que usa um for com base na variavel turmas enviada pelo app.py -->
 <main>
-
     <div class="container-principal">
-                <h2>Turmas Cadastradas</h2>
+    <button onclick="OpenModalTurmas()">Criar Turma</button>
+    <dialog id="modalturmas">
+        <form action="{{ url_for('create_turma') }}" method="post" class="form-modal">
+            <label for="name">Digite o Nome da nova turma</label>
+            <input type="text" name="name">
+
+            <input type="submit" value="criar">
+            <button onclick="CloseModalTurmas()" type="button" >Fechar</button>
+        </form>
+    </dialog>
+    {% if msgturmas %}
+            <p class="message-turmas">{{ msgturmas }}</p>
+    {% endif %}
+            <h2>Turmas Cadastradas</h2>
             {% if turmas %}
                 <table class="tabela-turmas">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for turma in turmas %}
-                            <tr>
-                                <td>{{ turma.id }}</td>
-                                <td>{{ turma.turma_name }}</td>
-                                <td>
-                                    <!-- Formulário de Exclusão -->
-                                </td>
+                    {% for turma in turmas %}
+                        <thead>
+                            <tr>    
+                                <th>{{turma.turma_name}}</th>
+                                <th>
+                                    <form action="{{ url_for('delete_turma', turma_id = turma.id , nome=turma.turma_name) }}" method="post">
+                                        <button type="submit">EXCLUIR</button>
+                                    </form>
+                                </th>
                             </tr>
-                        {% endfor %}
+                        </thead>
+                    {% endfor %}
+                    <tbody>
+                        <!-- Dedicado para nome dos crismandos -->
                     </tbody>
                 </table>
             {% else %}
                 <p>Nenhuma turma cadastrada ainda.</p>
             {% endif %}
 </main>
+<script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
 </body>
 </html>
