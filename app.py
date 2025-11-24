@@ -49,6 +49,10 @@ def register_user():
     username = request.form.get('nome', '').strip() #strip retira o espaço do input
     password = request.form.get('senha', '').strip()
     passwordmaster = request.form.get('senha-mestre', '').strip()
+
+    if not username or not password:
+        return redirect(url_for('register_page', msg='Erro: Nome de usuário e senha não podem ser vazios.'))
+        
     if passwordmaster == MASTER_PASSWORD:
         try:
             # Adiciona novo usuário
