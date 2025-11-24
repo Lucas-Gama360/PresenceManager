@@ -9,6 +9,10 @@
       href="{{url_for('static', filename='css/styleconfigadmin.css')}}"
     />
     <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styleturmas.css')}}"
+    />
+    <link
       rel="shortcut icon"
       href="{{url_for('static', filename='images/faviconcrisma.ico')}}"
       type="image/x-icon"
@@ -26,7 +30,7 @@
           alt="Logo da crisma"
           class="logo"
         />
-        <h1 class="title-center">Chamada da Crisma</h1>
+        <h1 class="title-center" onclick="window.location.href='/homepage'" >Chamada da Crisma</h1>
       </div>
       <form action="{{url_for('logout_user')}}" method="post">
         <button class="button-logout">Sair</button>
@@ -35,7 +39,6 @@
 <!-- No main é renderizado a tabela usando jinja que usa um for com base na variavel turmas enviada pelo app.py -->
 <main>
     <div class="container-principal">
-    <button onclick="OpenModalTurmas()">Criar Turma</button>
     <dialog id="modalturmas">
         <form action="{{ url_for('create_turma') }}" method="post" class="form-modal">
             <label for="name">Digite o Nome da nova turma</label>
@@ -49,6 +52,7 @@
             <p class="message-turmas">{{ msgturmas }}</p>
     {% endif %}
             <h2>Turmas Cadastradas</h2>
+            <button onclick="OpenModalTurmas()">Criar Turma</button> <!--BOTAO QUE ABRE MODAL, COLOQUEI AQUI POR ESTÉTICA-->
             {% if turmas %}
                 <table class="tabela-turmas">
                     {% for turma in turmas %}

@@ -1,0 +1,178 @@
+/* Estilos específicos para addturmas.html */
+
+/* Estilo para o botão "Criar Turma" */
+.container-principal > button {
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container-principal > button:hover {
+    background-color: #7a4e27; /* Tom um pouco mais escuro */
+    transform: translateY(-2px);
+}
+
+/* Estilo para a mensagem de feedback (msg turmas) */
+.message-turmas {
+    background-color: #e6ffe6; /* Fundo verde claro para sucesso */
+    color: #006600; /* Texto verde escuro */
+    border: 1px solid #00cc00;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Estilos para o formulário dentro do modal (form-modal) */
+.form-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 25px 30px 20px 30px;
+}
+
+.form-modal label {
+    font-weight: 600;
+    color: var(--marrom-logo);
+    font-size: 1.1em;
+}
+
+.form-modal input[type="text"] {
+    padding: 10px;
+    border: 2px solid var(--marrom-logo);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-modal input[type="text"]:focus {
+    border-color: #5c3c24;
+    outline: none;
+}
+
+.form-modal input[type="submit"] {
+    background: var(--marrom-logo);
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form-modal input[type="submit"]:hover {
+    background: #5c3c24; /* tom mais escuro */
+}
+
+/* Estilo para o botão "Fechar" do modal */
+.form-modal button[type="button"] {
+    background: #f7f7f7;
+    color: #666;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.form-modal button[type="button"]:hover {
+    background: #eee;
+}
+
+/* Centralização do Modal */
+#modalturmas[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0; /* Remove margem padrão do dialog */
+}
+
+/* Estilo para o botão EXCLUIR na tabela */
+.tabela-turmas button[type="submit"] {
+    background-color: #ff4d4d; /* Vermelho para exclusão */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.tabela-turmas button[type="submit"]:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+/* Ajuste para o cabeçalho da tabela (th) para alinhar o botão */
+/* O HTML usa duas <th> separadas dentro de <tr>.
+   O problema é que o <thead> é repetido para cada turma, o que é semanticamente incorreto.
+   No entanto, para o layout funcionar com a estrutura atual, vamos garantir que as <th> se comportem como células de tabela normais.
+   A estrutura é: <tr> <th>Nome</th> <th>Botão</th> </tr>
+   Como o HTML já separa o nome e o botão em duas <th> distintas, o problema de "aparecer abaixo"
+   só ocorreria se a largura da tabela fosse muito pequena ou se o display: flex estivesse sendo aplicado
+   de forma incorreta.
+
+   O CSS anterior estava tentando usar flexbox em <th>, o que é desnecessário e incorreto
+   para a estrutura de duas <th>.
+
+   Vamos remover o CSS incorreto e adicionar um estilo para a centralização vertical
+   do conteúdo das células (th/td) e garantir que o botão EXCLUIR fique no canto direito da sua célula.
+*/
+
+.tabela-turmas th, .tabela-turmas td {
+    vertical-align: middle; /* Centraliza verticalmente o conteúdo da célula */
+}
+
+.tabela-turmas th:last-child, .tabela-turmas td:last-child {
+    text-align: right; /* Alinha o botão de excluir à direita */
+}
+
+.tabela-turmas th:first-child {
+    width: 80%; /* Dá mais espaço para o nome da turma */
+}
+
+.tabela-turmas th:last-child {
+    width: 20%; /* Espaço para o botão */
+}
+
+/* Media Query para responsividade */
+@media (max-width: 600px) {
+    .container-principal > button {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .form-modal {
+        padding: 20px;
+    }
+
+    .form-modal label {
+        font-size: 1em;
+    }
+
+    .form-modal input[type="submit"],
+    .form-modal button[type="button"] {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .tabela-turmas button[type="submit"] {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
