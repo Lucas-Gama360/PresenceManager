@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Crismandos</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/faviconcrisma.ico')}}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% if turmas%}
+    <form action="{{url_for('list_crismandos')}}" method="get">
+        <label for="add">Adicionar Novo crismando:</label>
+        <input type="text" name="add">
+        <!-- esse option usa propiedades para ser vazio e nao permitir envio do form vazio -->
+        <option value="" disabled selected>-- Selecione a Turma --</option>
+
+        <label for="select"> Selecione a turma do crismando:</label>
+        <select name="select" id="select-turmas">
+            {% for turma in turmas %}
+                {% if loop.first %}
+                    <option value="" selected disabled>Selecione</option>
+                {% endif %}
+
+            <option value="{{ turma.id }}">{{ turma.turma_name }}</option>
+            {% endfor %}
+        </select>
+        {% else %}
+            <p>Ainda não Há turmas cadastradas</p>
+        {% endif %}
+        
+    </form>
+    
+</body>
+</html>

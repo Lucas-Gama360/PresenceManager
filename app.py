@@ -112,7 +112,7 @@ def list_turmas():
     
     # 3. Renderiza o Template
     # passa pro jinja a variavel turmas recebendo tudo que tem na tabela de turmas
-    return render_template('addturmas.html', turmas=turmas, msgturmas=msg)
+    return render_template('turmas.html', turmas=turmas, msgturmas=msg)
 
 @app.post('/deleteturma/<int:turma_id>/<nome>')
 def delete_turma(turma_id , nome):
@@ -157,9 +157,23 @@ def create_turma():
         return redirect(url_for('list_turmas',msg=f'Erro: A turma "{turmaname}" já existe.'))
     # captura qualquer erro inesperado
     except Exception as e:
-        return redirect(url_for('list_turmas',
-                                msg=f'Erro inesperado: {str(e)}'))
+        return redirect(url_for('list_turmas',msg=f'Erro inesperado: {str(e)}'))
 
+#====================================
+# ROTAS EDIÇÃO DE CRISMANDOS
+#====================================       
+@app.get("/listcrismandos")
+def list_crismandos():
+    if not 'admin' in session:
+        return render_template('index.html')
+    else:
+        with get_conn() as conn:
+            cur = conn.cursor()
+            # Busca todas as turmas e ordena por nome
+            cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
+            turmas = cur.fetchall()
+
+            return render_template('crismandos.html', turmas=turmas)
 #====================================
 # FUNÇÃO LOGOUT
 #====================================

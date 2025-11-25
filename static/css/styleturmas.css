@@ -149,7 +149,6 @@
 .tabela-turmas th:last-child {
     width: 20%; /* Espaço para o botão */
 }
-
 /* Media Query para responsividade */
 @media (max-width: 600px) {
     .container-principal > button {
