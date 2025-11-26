@@ -24,3 +24,11 @@ function CloseModalTurmas(){
     const modal = document.getElementById("modalturmas")
     modal.close(); 
 }
+function OpenModalEditCrismandos(){
+    const modal = document.getElementById("modaleditcrismandos")
+    modal.showModal();
+}
+function CloseModalEditCrismandos(){
+    const modal = document.getElementById("modaleditcrismandos")
+    modal.close(); 
+}

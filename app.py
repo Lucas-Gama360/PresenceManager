@@ -164,6 +164,8 @@ def create_turma():
 #====================================       
 @app.get("/listcrismandos")
 def list_crismandos():
+    # puxa as msg das outras funções se eu tiver mandando, como na de deletar
+    msg = request.args.get('msg')
     if not 'admin' in session:
         return render_template('index.html')
     else:
@@ -173,7 +175,26 @@ def list_crismandos():
             cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
             turmas = cur.fetchall()
 
-            return render_template('crismandos.html', turmas=turmas)
+            return render_template('crismandos.html', turmas=turmas, msgcrismandos =msg)
+        
+@app.post("/addcrismandos/<int:turma_id>")
+def add_crismandos(turma_id):
+    if not 'admin' in session:
+        return render_template('index.html')
+    
+    namecrismando = request.form.get('add', '').strip() #strip retira o espaço do input
+    if not namecrismando:
+        return redirect(url_for('list_crimandos', msg='Erro: O nome do crismando não pode ser vazio.'))
+    try:
+        with get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute("INSERT INTO crismandos (name, turma_id) VALUES (?, ?)", (namecrismando, turma_id))
+            nome = cur.fetchall()
+            conn.commit()
+        return redirect(url_for('list_crismandos', msg='Crismando adicionado com sucesso'))
+    except sqlite3.IntegrityError:
+        return redirect(url_for('list_crismandos', msg=f'Erro: O"{namecrismando}" já está cadastrado.'))
+
 #====================================
 # FUNÇÃO LOGOUT
 #====================================
