@@ -1,57 +1,107 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editar Crismandos</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/styleconfigadmin.css')}}">
-    <link rel="shortcut icon" href="{{url_for('static', filename='images/faviconcrisma.ico')}}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-</head>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styleconfigadmin.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/stylecrismandos.css')}}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static', filename='images/faviconcrisma.ico')}}"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="header-left">
-            <img src="{{url_for('static', filename='images/logocrismamaior.png')}}" alt="Logo da crisma" class="logo" />
-            <h1 class="title-center" onclick="window.location.href='/homepage'">Chamada da Crisma</h1>
-        </div>
-        <form action="{{url_for('logout_user')}}" method="post">
-            <button class="button-logout">Sair</button>
-        </form>
+      <div class="header-left">
+        <img
+          src="{{url_for('static', filename='images/logocrismamaior.png')}}"
+          alt="Logo da crisma"
+          class="logo"
+        />
+        <h1 class="title-center" onclick="window.location.href='/homepage'">
+          Chamada da Crisma
+        </h1>
+      </div>
+      <form action="{{url_for('logout_user')}}" method="post">
+        <button class="button-logout">Sair</button>
+      </form>
     </header>
-        {% if msgcrismandos %}
-            <p class="message-turmas">{{ msgcrismandos }}</p>
-        {% endif %}
-    <button onclick="OpenModalEditCrismandos()">Criar Turma</button>
-    <dialog id="modaleditcrismandos">
-        {% if turmas%}
-        {% for turma in turmas %}
-        <form action="{{ url_for('add_crismandos', turma_id = turma.id) }}" method="post">
-            <label for="add">Adicionar Novo crismando:</label>
-            <input type="text" name="add">
-            <!-- esse option usa propiedades para ser vazio e nao permitir envio do form vazio -->
-            <option value="" disabled selected>-- Selecione a Turma --</option>
-            <label for="select"> Selecione a turma do crismando:</label>
-            <select name="select" id="select-turmas">
-                {% if loop.first %}
-                <option value="" selected disabled>Selecione</option>
-                {% endif %}
-                <option value="{{ turma.id }}">{{ turma.turma_name }}</option>
-                {% endfor %}
-            </select>
-            {% else %}
-            <p>Ainda não Há turmas cadastradas</p>
-            {% endif %}
+<main>
+<div id="container-principal">
 
-            <input type="submit" value="Pronto!">
-        </form>
-        <button onclick="CloseModalEditCrismandos()">Fechar</button>
+    <h1>Crismandos</h1>
+    <button onclick="OpenModalEditCrismandos()">Adicionar Crismando</button>
+    {% if msgcrismandos %}
+    <p class="message-turmas">{{ msgcrismandos }}</p>
+    {% endif %}    
+    <!-- Nesse modal eu pego a requisição get que lista as turmas e seleciono id do novo crismando usando o JINJA onde
+     tem um select somente, e dentro dele um for que gera opçoes de acordo com os id da turmas, aparecendo pros usuários o nome delas -->
+    <dialog id="modaleditcrismandos">
+      {% if turmas %}
+      <form action="{{ url_for('add_crismandos') }}" method="post">
+
+        <label for="add">Adicionar Novo crismando:</label>
+        <input type="text" name="add" />
+
+        <label for="turma_id"> Selecione a turma do crismando:</label>
+        <select name="turma_id" required>
+
+          <option value="" selected disabled>Selecione</option>
+          {% for turma in turmas %}
+          <option value="{{ turma.id }}">{{ turma.turma_name }}</option>
+          {% endfor %}
+
+        </select>
+        <input type="submit" value="Pronto!" />
+      </form>
+      {% else %}
+      <p>Ainda não Há turmas cadastradas</p>
+      {% endif %}<button onclick="CloseModalEditCrismandos()">Fechar</button>
     </dialog>
 
-
+    {% for turma in turmas %}
+        <h2 class="turma-titulo">{{ turma.turma_name }}</h2>
+        {% set crismandos_encontrados = false %}
+        <table class="tabela-crismandos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome do Crismando</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for crismando in crismandos%}
+                    {% if crismando.turma_id == turma.id %}
+                        {% set crismandos_encontrados = true %}
+                        <tr>
+                            <td>{{crismando.id}}</td>
+                            <td>{{crismando.name}}</td>
+                            <td>
+                                <button>Editar</button>
+                                <button>Excluir</button>
+                            </td>
+                        </tr>
+                    {%endif%}
+                {%endfor%}
+            </tbody>
+        </table>
+    {% endfor %}
+    </main>
+    </div>
     <script src="{{url_for('static', filename='scripts/script.js')}}"></script>
-</body>
-
+  </body>
 </html>

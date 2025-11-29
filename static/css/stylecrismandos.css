@@ -1,0 +1,273 @@
+/* Estilos adaptados de styleturmas.css para crismandos.html */
+
+/* Variável de cor (assumindo que var(--marrom-logo) é #8B4513) */
+:root {
+    --marrom-logo: #9B6230;
+}
+
+/* =============================== */
+/*   TÍTULO + BOTÃO PRINCIPAL     */
+/* =============================== */
+
+#container-principal h1 {
+    text-align: center;
+    font-size: 32px;
+    color: var(--marrom-logo);
+    margin-bottom: 20px;
+}
+
+#container-principal > button {
+    display: block;
+    margin: 0 auto 30px auto;
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#container-principal > button:hover {
+    background-color: #7a4e27;
+    transform: translateY(-2px);
+}
+
+/* =============================== */
+/*     MENSAGENS DE FEEDBACK      */
+/* =============================== */
+.message-turmas {
+    background-color: #e6ffe6;
+    color: #006600;
+    border: 1px solid #00cc00;
+    padding: 8px 15px; /* Diminuído o padding */
+    border-radius: 8px;
+    margin: 15px auto; /* Centralizado e ajustado margem */
+    width: fit-content; /* Diminui a largura para o conteúdo */
+    font-weight: 500;
+    text-align: center;
+}
+
+/* =============================== */
+/*        ESTILO DA TURMA         */
+/* =============================== */
+
+.turma-titulo {
+    text-align: center;
+    font-size: 24px;
+    color: var(--marrom-logo);
+    margin: 40px auto 15px auto;
+    width: 60%; /* Mesma largura da tabela */
+    max-width: 600px; /* Limite de largura */
+}
+
+/* =============================== */
+/*            TABELA              */
+/* =============================== */
+
+.tabela-crismandos {
+    width: 60%;
+    margin: 0 auto 40px auto; /* Ajustado margem inferior */
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    max-width: 600px; /* Limite de largura */
+}
+
+/* CABEÇALHO */
+.tabela-crismandos thead {
+    background: var(--marrom-logo);
+    color: white;
+}
+
+.tabela-crismandos thead th {
+    padding: 14px;
+    font-size: 16px; /* Diminuído um pouco */
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center; /* Centralizado */
+}
+
+/* CORPO DA TABELA */
+.tabela-crismandos tbody td {
+    padding: 12px;
+    font-size: 15px; /* Diminuído um pouco */
+    border-bottom: 1px solid #ddd;
+    text-align: center; /* Centralizado */
+}
+
+/* última linha */
+.tabela-crismandos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* alternância de cores */
+.tabela-crismandos tbody tr:nth-child(even) {
+    background: #f7f7f7;
+}
+
+/* linha "não existem crismandos..." */
+.tabela-crismandos tbody td[colspan] {
+    text-align: center;
+    font-style: italic;
+    padding: 18px 0;
+    color: #444;
+}
+
+/* BOTÕES DE AÇÃO */
+.tabela-crismandos button {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: white;
+    margin: 0 2px;
+}
+
+.tabela-crismandos button:first-of-type {
+    background-color: #4CAF50; /* Verde para Editar */
+}
+
+.tabela-crismandos button:last-of-type {
+    background-color: #ff4d4d; /* Vermelho para Excluir */
+    margin-right: 0;
+}
+
+.tabela-crismandos button:hover {
+    opacity: 0.8;
+}
+
+/* Ajuste de largura e alinhamento das colunas */
+.tabela-crismandos th:nth-child(1), .tabela-crismandos td:nth-child(1) { width: 10%; } /* ID */
+.tabela-crismandos th:nth-child(2), .tabela-crismandos td:nth-child(2) { 
+    width: 50%; 
+    text-align: left; /* Nome alinhado à esquerda para melhor leitura */
+} 
+.tabela-crismandos th:nth-child(3), .tabela-crismandos td:nth-child(3) { width: 40%; } /* Ações */
+
+
+/* =============================== */
+/*            MODAL               */
+/* =============================== */
+
+#modaleditcrismandos {
+    padding: 0;
+    border: none;
+    border-radius: 15px;
+    width: 350px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+#modaleditcrismandos[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* corpo do modal — IGUAL TURMAS */
+#modaleditcrismandos form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 25px 30px 20px 30px;
+}
+
+#modaleditcrismandos label {
+    font-weight: 600;
+    color: var(--marrom-logo);
+    font-size: 1.1em;
+}
+
+#modaleditcrismandos input[type="text"],
+#modaleditcrismandos select {
+    padding: 10px;
+    border: 2px solid var(--marrom-logo);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+#modaleditcrismandos input[type="text"]:focus,
+#modaleditcrismandos select:focus {
+    border-color: #5c3c24;
+    outline: none;
+}
+
+/* BOTÃO "PRONTO!" */
+#modaleditcrismandos input[type="submit"] {
+    background: var(--marrom-logo);
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#modaleditcrismandos input[type="submit"]:hover {
+    background: #5c3c24;
+}
+
+/* BOTÃO FECHAR */
+#modaleditcrismandos button {
+    margin: 0 auto 15px auto;
+    display: block;
+    background: #f7f7f7;
+    color: #666;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+#modaleditcrismandos button:hover {
+    background: #eee;
+}
+
+/* =============================== */
+/*            RESPONSIVO          */
+/* =============================== */
+
+@media (max-width: 700px) {
+    .tabela-crismandos {
+        width: 90%;
+    }
+
+    .turma-titulo {
+        width: 90%;
+    }
+
+    #container-principal > button {
+        width: 80%;
+        text-align: center;
+    }
+
+    .tabela-crismandos thead th {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .tabela-crismandos tbody td {
+        font-size: 13px;
+        padding: 8px;
+    }
+    
+    .tabela-crismandos button {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+}

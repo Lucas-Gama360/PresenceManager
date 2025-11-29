@@ -174,17 +174,21 @@ def list_crismandos():
             # Busca todas as turmas e ordena por nome
             cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
             turmas = cur.fetchall()
+            # Busca todas os crismandos e ordena por nome
+            cur.execute("SELECT id, name, turma_id FROM crismandos ORDER BY name")
+            crismandos = cur.fetchall()
 
-            return render_template('crismandos.html', turmas=turmas, msgcrismandos =msg)
+            return render_template('crismandos.html', turmas=turmas, msgcrismandos =msg, crismandos = crismandos)
         
-@app.post("/addcrismandos/<int:turma_id>")
-def add_crismandos(turma_id):
+@app.post("/addcrismandos/")
+def add_crismandos():
     if not 'admin' in session:
         return render_template('index.html')
     
     namecrismando = request.form.get('add', '').strip() #strip retira o espaço do input
+    turma_id = request.form.get("turma_id")
     if not namecrismando:
-        return redirect(url_for('list_crimandos', msg='Erro: O nome do crismando não pode ser vazio.'))
+        return redirect(url_for('list_crismandos', msg='Erro: O nome do crismando não pode ser vazio.'))
     try:
         with get_conn() as conn:
             cur = conn.cursor()
@@ -192,6 +196,7 @@ def add_crismandos(turma_id):
             nome = cur.fetchall()
             conn.commit()
         return redirect(url_for('list_crismandos', msg='Crismando adicionado com sucesso'))
+    
     except sqlite3.IntegrityError:
         return redirect(url_for('list_crismandos', msg=f'Erro: O"{namecrismando}" já está cadastrado.'))
 
