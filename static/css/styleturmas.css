@@ -99,9 +99,9 @@
     transform: translate(-50%, -50%);
     margin: 0; /* Remove margem padrão do dialog */
 }
-
+/* Fundo escurecido ao redor do modal */
 /* Estilo para o botão EXCLUIR na tabela */
-.tabela-turmas button[type="submit"] {
+.tabela-turmas #openmodalconfirmation {
     background-color: #ff4d4d; /* Vermelho para exclusão */
     color: white;
     border: none;
@@ -149,6 +149,86 @@
 .tabela-turmas th:last-child {
     width: 20%; /* Espaço para o botão */
 }
+/* =============================== */
+/*      MODAL DE CONFIRMAÇÃO       */
+/* =============================== */
+
+#modalconfirmation {
+    /* Estilo base do dialog */
+    padding: 0;
+    border: none;
+    border-radius: 15px;
+    width: 300px; /* Largura fixa */
+    max-width: 90%; /* Responsividade: garante que em telas pequenas ele não ultrapasse 90% da largura */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    background-color: white;
+}
+
+/* Centralização quando o modal está aberto */
+#modalconfirmation[open] {
+    position: fixed; /* Fixa o modal na viewport, não na página */
+    top: 50%; /* Move o topo do modal para 50% da altura da tela */
+    left: 50%; /* Move a esquerda do modal para 50% da largura da tela */
+    transform: translate(-50%, -50%); /* Move o modal de volta em 50% da sua própria largura e altura, centralizando-o perfeitamente */
+}
+
+/* Estilo do conteúdo interno (o formulário) */
+#modalconfirmation form {
+    /* Usamos Grid para organizar o texto e os botões */
+    display: grid;
+    grid-template-areas: 
+        "text text" /* O parágrafo de texto ocupa duas colunas */
+        "sim nao"; /* Os botões SIM e NÃO ficam lado a lado */
+    grid-template-columns: 1fr 1fr; /* Divide o espaço dos botões em duas colunas iguais */
+    gap: 15px;
+    padding: 25px 30px;
+}
+
+/* Estilo do parágrafo de aviso */
+#modalconfirmation p {
+    grid-area: text; /* Aplica a área definida no grid */
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--marrom-logo); /* Cor de aviso para a ação irreversível */
+    text-align: center;
+    margin: 0;
+}
+
+/* Estilo dos botões */
+#modalconfirmation button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: none;
+    min-width: 100px;
+}
+
+/* Botão SIM (Ação destrutiva) */
+#modalconfirmation button[type="submit"] {
+    grid-area: sim; /* Aplica a área definida no grid */
+    background-color: #cc0000; /* Vermelho para deletar */
+    color: white;
+}
+
+#modalconfirmation button[type="submit"]:hover {
+    background-color: #a00000;
+}
+
+/* Botão NÃO (Ação de cancelar) */
+#modalconfirmation button[type="button"] {
+    grid-area: nao; /* Aplica a área definida no grid */
+    background-color: #f0f0f0; /* Cinza claro */
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+#modalconfirmation button[type="button"]:hover {
+    background-color: #e0e0e0;
+}
+
 /* Media Query para responsividade */
 @media (max-width: 600px) {
     .container-principal > button {

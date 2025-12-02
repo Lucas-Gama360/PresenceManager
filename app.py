@@ -109,10 +109,14 @@ def list_turmas():
         # Busca todas as turmas e ordena por nome
         cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
         turmas = cur.fetchall()
+
+        # Busca todas os crismandos e ordena por nome
+        cur.execute("SELECT id, name, turma_id FROM crismandos ORDER BY name")
+        crismandos = cur.fetchall()
     
     # 3. Renderiza o Template
     # passa pro jinja a variavel turmas recebendo tudo que tem na tabela de turmas
-    return render_template('turmas.html', turmas=turmas, msgturmas=msg)
+    return render_template('turmas.html', turmas=turmas, msgturmas=msg, crismandos = crismandos)
 
 @app.post('/deleteturma/<int:turma_id>/<nome>')
 def delete_turma(turma_id , nome):
@@ -128,6 +132,10 @@ def delete_turma(turma_id , nome):
                 
         # 2. Excluir a turma
         cur.execute("DELETE FROM turmas WHERE id = ?", (turma_id,))
+        conn.commit()
+
+        # 2. Excluir os crismandos da turmas
+        cur.execute("DELETE FROM crismandos WHERE turma_id = ?", (turma_id,))
         conn.commit()
             
         return redirect(url_for('list_turmas', msg=f'{nome} excluida com sucesso!'))
@@ -177,8 +185,7 @@ def list_crismandos():
             # Busca todas os crismandos e ordena por nome
             cur.execute("SELECT id, name, turma_id FROM crismandos ORDER BY name")
             crismandos = cur.fetchall()
-
-            return render_template('crismandos.html', turmas=turmas, msgcrismandos =msg, crismandos = crismandos)
+            return render_template('crismandos.html', turmas = turmas, msgcrismandos =msg, crismandos = crismandos)
         
 @app.post("/addcrismandos/")
 def add_crismandos():
@@ -199,6 +206,18 @@ def add_crismandos():
     
     except sqlite3.IntegrityError:
         return redirect(url_for('list_crismandos', msg=f'Erro: O"{namecrismando}" já está cadastrado.'))
+
+@app.post("/deletecrismando/<int:crismando_id>")
+def delete_crismandos(crismando_id):
+    if not 'admin' in session:
+        return render_template('index.html')
+    else:
+        with get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute("DELETE FROM crismandos WHERE id = ?", (crismando_id,))
+            conn.commit()
+        return redirect(url_for('list_crismandos', msg='Crismando retirado com sucesso!')) 
+
 
 #====================================
 # FUNÇÃO LOGOUT

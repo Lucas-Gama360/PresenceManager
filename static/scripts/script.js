@@ -32,3 +32,19 @@ function CloseModalEditCrismandos(){
     const modal = document.getElementById("modaleditcrismandos")
     modal.close(); 
 }
+function OpenModalConfirmation(){
+    const modal = document.getElementById("modalconfirmation")
+    modal.showModal();   
+}
+function CloseModalConfirmation(){
+    const modal = document.getElementById("modalconfirmation")
+    modal.close();   
+}
+function OpenEditCrismandos(){
+    const modal = document.getElementById("modaledit")
+    modal.showModal();
+}
+function CloseEditCrismandos(){
+    const modal = document.getElementById("modaledit")
+    modal.close(); 
+}

@@ -21,6 +21,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Icone do lápis -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   </head>
 
   <body>
@@ -72,9 +74,8 @@
       {% endif %}<button onclick="CloseModalEditCrismandos()">Fechar</button>
     </dialog>
 
-    {% for turma in turmas %}
+    {% for turma in turmas%}
         <h2 class="turma-titulo">{{ turma.turma_name }}</h2>
-        {% set crismandos_encontrados = false %}
         <table class="tabela-crismandos">
             <thead>
                 <tr>
@@ -84,15 +85,31 @@
                 </tr>
             </thead>
             <tbody>
-                {%for crismando in crismandos%}
+              <!-- o sort ordena os crismandos em ordem alfabética -->
+                {%for crismando in crismandos | sort(attribute='name')%}
                     {% if crismando.turma_id == turma.id %}
-                        {% set crismandos_encontrados = true %}
                         <tr>
-                            <td>{{crismando.id}}</td>
+                          <!-- o loop.index é um contador nativo automático fornecido dentro de qualquer loop -->
+                            <td>{{loop.index}}</td>
                             <td>{{crismando.name}}</td>
                             <td>
-                                <button>Editar</button>
-                                <button>Excluir</button>
+                              <!-- aqui eu puxo o ícone da caneta -->
+                                <button onclick="OpenEditCrismandos()"><i class="fas fa-pencil-alt"></i></button>
+                                <dialog id="modaledit">
+                                  <form action="">
+                                    <label for="switch-turma">Trocar Turma do crismando:</label>
+                                    <select name="switch-turma" id="trocarturma">
+                                      <option value="" selected disabled>Selecione</option>
+                                        {% for turma in turmas %}
+                                        <option value="{{ turma.id }}">{{ turma.turma_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                  </form>                                  
+                                  <form action="{{url_for('delete_crismandos', crismando_id = crismando.id)}}" method="post">
+                                    <button type="submit" id="excluir-crimando">Excluir Crismando</button>
+                                  </form>
+                                  <button type="button" onclick="CloseEditCrismandos()">Cancelar</button>
+                                </dialog>
                             </td>
                         </tr>
                     {%endif%}

@@ -127,18 +127,13 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+    background-color: white;
     transition: background-color 0.3s;
     color: white;
     margin: 0 2px;
 }
-
-.tabela-crismandos button:first-of-type {
-    background-color: #4CAF50; /* Verde para Editar */
-}
-
-.tabela-crismandos button:last-of-type {
-    background-color: #ff4d4d; /* Vermelho para Excluir */
-    margin-right: 0;
+.tabela-crismandos i{
+    color: black;
 }
 
 .tabela-crismandos button:hover {
@@ -237,7 +232,9 @@
 #modaleditcrismandos button:hover {
     background: #eee;
 }
-
+#modaledit button{
+    color: black;
+}
 /* =============================== */
 /*            RESPONSIVO          */
 /* =============================== */

@@ -54,23 +54,33 @@
             <h2>Turmas Cadastradas</h2>
             <button onclick="OpenModalTurmas()">Criar Turma</button> <!--BOTAO QUE ABRE MODAL, COLOQUEI AQUI POR ESTÉTICA-->
             {% if turmas %}
-                <table class="tabela-turmas">
-                    {% for turma in turmas %}
-                        <thead>
-                            <tr>    
-                                <th>{{turma.turma_name}}</th>
-                                <th>
-                                    <form action="{{ url_for('delete_turma', turma_id = turma.id , nome=turma.turma_name) }}" method="post">
-                                        <button type="submit">EXCLUIR</button>
-                                    </form>
-                                </th>
-                            </tr>
-                        </thead>
-                    {% endfor %}
-                    <tbody>
-                        <!-- Dedicado para nome dos crismandos -->
-                    </tbody>
-                </table>
+{% for turma in turmas %}
+    <table class="tabela-turmas">
+        <thead>
+            <tr>    
+                <th>{{turma.turma_name}}</th>
+                <th>
+                        <button type="button" onclick="OpenModalConfirmation()" id="openmodalconfirmation">EXCLUIR</button>
+                        <dialog id="modalconfirmation">
+                          <form action="{{ url_for('delete_turma', turma_id = turma.id , nome=turma.turma_name) }}" method="post">
+                            <p> OBS: Esta ação é irreversível</p>
+                            <button type="submit">SIM</button>
+                            <button type="button" onclick="CloseModalConfirmation()">NÃO</button>
+                          </form>
+                        </dialog>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for crismando in crismandos | sort(attribute='name')%}
+                 {% if crismando.turma_id == turma.id %}
+                 <tr>
+                     <td>{{loop.index}}</td> <td>{{crismando.name}}</td> </tr>
+                 {%endif%}
+             {%endfor%}
+        </tbody>
+    </table>
+{% endfor %}
             {% else %}
                 <p>Nenhuma turma cadastrada ainda.</p>
             {% endif %}
