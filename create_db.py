@@ -1,6 +1,7 @@
 import sqlite3
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 # Caminho do banco de dados dentro da pasta "data"
 db_path = os.path.join("data", "dataBase.db")
 
@@ -56,9 +57,10 @@ CREATE TABLE IF NOT EXISTS attendance (
 # DEFAULT 0 é para sempre que um novo usuario for criado ele receber 0, já que só o admin recebe 1
 # Inserir usuário admin apenas se ainda não existir
 
-cursor.execute("""
+admin_password = os.environ.get('ADMIN_PASSWORD')
+cursor.execute(f"""
 INSERT OR IGNORE INTO users (username, password, is_admin)
-VALUES ('admin', 'sfcrisma_admin', 1);
+VALUES ('admin', '{admin_password}', 1);
 """)
 
 conn.commit()

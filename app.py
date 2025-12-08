@@ -1,17 +1,25 @@
 import sqlite3
 from flask import Flask, render_template, redirect, url_for, request, session
 import os
+import secrets #pra poder gerar secret key aleatoria, segura(módulo nativo do python)
+from dotenv import load_dotenv
+
+# Carrega automaticamente as variáveis de ambiente a partir do arquivo '.env'
+# Isso permite usar configurações como SECRET_KEY, DATABASE_URL, etc. sem precisar definir manualmente no terminal
+load_dotenv()
 
 def get_conn(): 
     conn = sqlite3.connect("data/dataBase.db")
     conn.row_factory = sqlite3.Row
     return conn
 
-# Define que os templates estão na pasta "pages"
 app = Flask(__name__)
 #define senha mestre
-MASTER_PASSWORD =   "sfcrisma"
-app.config['SECRET_KEY'] = 'ufw$hR!o&b|vtP%3' # Adicionar chave secreta para sessões
+# puxa do arquivo de enviroments
+MASTER_PASSWORD = os.environ.get('MASTER_PASSWORD')
+
+#  gera aleatoriamente a secret key
+app.config['SECRET_KEY'] = secrets.token_urlsafe(32)
 
 
 #====================================
@@ -202,12 +210,12 @@ def add_crismandos():
             cur.execute("INSERT INTO crismandos (name, turma_id) VALUES (?, ?)", (namecrismando, turma_id))
             nome = cur.fetchall()
             conn.commit()
-        return redirect(url_for('list_crismandos', msg='Crismando adicionado com sucesso'))
-    
+        return redirect(url_for('list_crismandos', msg='Crismando adicionado com sucesso!'))
+    # violação do UNIQUE, ou seja, o crismando já está cadastrado
     except sqlite3.IntegrityError:
         return redirect(url_for('list_crismandos', msg=f'Erro: O"{namecrismando}" já está cadastrado.'))
 
-@app.post("/deletecrismando/<int:crismando_id>")
+@app.post("/deletecrismandos/<int:crismando_id>")
 def delete_crismandos(crismando_id):
     if not 'admin' in session:
         return render_template('index.html')
@@ -218,7 +226,21 @@ def delete_crismandos(crismando_id):
             conn.commit()
         return redirect(url_for('list_crismandos', msg='Crismando retirado com sucesso!')) 
 
+@app.post("/switchturma")
+def switch_turma():
+    crismando_id = int(request.form.get('crismando_id'))
+    nova_turma = int(request.form.get('switch-turma'))
+    if not 'admin' in session:
+        return render_template('index.html')
+    else:
+        with get_conn() as conn:
+            cur = conn.cursor()
+            # A cláusula SET é usada para especificar quais colunas devem ser modificadas e qual será o novo valor para essas colunas.
+            # A cláusula WHERE é usada para filtrar os registros. Ela define a condição que deve ser verdadeira para que um registro seja afetado pelo comando UPDATE.
+            cur.execute("UPDATE crismandos SET turma_id = ? WHERE id = ?", (nova_turma, crismando_id))
 
+            conn.commit()
+        return redirect(url_for('list_crismandos', msg='Troca de turma efetuada com sucesso!')) 
 #====================================
 # FUNÇÃO LOGOUT
 #====================================

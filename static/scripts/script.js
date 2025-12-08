@@ -40,11 +40,22 @@ function CloseModalConfirmation(){
     const modal = document.getElementById("modalconfirmation")
     modal.close();   
 }
-function OpenEditCrismandos(){
-    const modal = document.getElementById("modaledit")
-    modal.showModal();
+function OpenEditCrismandos(crismandoId) {
+  const dialog = document.getElementById('modaledit-global');
+  const inputCrismandoId = document.getElementById('crismando-id-input');
+  const deleteForm = document.getElementById('form-delete-crismando');
+
+  // Define o ID do crismando no formulário de troca
+  inputCrismandoId.value = crismandoId;
+
+  // 2. Define onde o formulário de exclusão vai enviar
+  document.getElementById('form-delete').action = `/deletecrismandos/${crismandoId}`;
+
+  // 3. Abre o diálogo
+  document.getElementById('modaledit-global').showModal();
 }
-function CloseEditCrismandos(){
-    const modal = document.getElementById("modaledit")
-    modal.close(); 
+
+function CloseEditCrismandos() {
+  const dialog = document.getElementById('modaledit-global');
+  dialog.close();
 }

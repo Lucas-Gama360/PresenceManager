@@ -94,22 +94,7 @@
                             <td>{{crismando.name}}</td>
                             <td>
                               <!-- aqui eu puxo o ícone da caneta -->
-                                <button onclick="OpenEditCrismandos()"><i class="fas fa-pencil-alt"></i></button>
-                                <dialog id="modaledit">
-                                  <form action="">
-                                    <label for="switch-turma">Trocar Turma do crismando:</label>
-                                    <select name="switch-turma" id="trocarturma">
-                                      <option value="" selected disabled>Selecione</option>
-                                        {% for turma in turmas %}
-                                        <option value="{{ turma.id }}">{{ turma.turma_name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                  </form>                                  
-                                  <form action="{{url_for('delete_crismandos', crismando_id = crismando.id)}}" method="post">
-                                    <button type="submit" id="excluir-crimando">Excluir Crismando</button>
-                                  </form>
-                                  <button type="button" onclick="CloseEditCrismandos()">Cancelar</button>
-                                </dialog>
+                                <button onclick="OpenEditCrismandos({{crismando.id}})"><i class="fas fa-pencil-alt"></i></button>
                             </td>
                         </tr>
                     {%endif%}
@@ -119,6 +104,29 @@
     {% endfor %}
     </main>
     </div>
-    <script src="{{url_for('static', filename='scripts/script.js')}}"></script>
+
+<!-- tava abrindo só o dialog do primeiro crismando, erro no loop, agora é um unico dialog -->
+<!-- Diálogo global, único -->
+<dialog id="modaledit-global">
+  <!-- Formulário de troca de turma -->
+  <form id="form-switch" action="{{ url_for('switch_turma') }}" method="post">
+    <select name="switch-turma">
+      {% for t in turmas %}
+        <option value="{{ t.id }}">{{ t.turma_name }}</option>
+      {% endfor %}
+    </select>
+    <input type="hidden" name="crismando_id" id="crismando-id-input">
+    <input type="submit" value="Trocar">
+  </form>
+
+  <!-- Formulário de exclusão -->
+  <form id="form-delete" method="post">
+    <button type="submit">Excluir</button>
+  </form>
+
+  <button onclick="CloseEditCrismandos()">Cancelar</button>
+</dialog>
+
+<script src="{{url_for('static', filename='scripts/script.js')}}"></script>
   </body>
 </html>
