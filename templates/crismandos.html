@@ -85,12 +85,16 @@
                 </tr>
             </thead>
             <tbody>
+            <!-- Inicializa o contador como lista -->
+            {# Jinja não consegue mudar uma variável global dentro de um loop, mas listas ele consegue #}
+            {% set counter = [0] %}
               <!-- o sort ordena os crismandos em ordem alfabética -->
                 {%for crismando in crismandos | sort(attribute='name')%}
                     {% if crismando.turma_id == turma.id %}
+                    {% set _ = counter.append(counter.pop() + 1) %}
                         <tr>
                           <!-- o loop.index é um contador nativo automático fornecido dentro de qualquer loop -->
-                            <td>{{loop.index}}</td>
+                            <td>{{counter[0]}}</td>
                             <td>{{crismando.name}}</td>
                             <td>
                               <!-- aqui eu puxo o ícone da caneta -->
@@ -110,6 +114,7 @@
 <dialog id="modaledit-global">
   <!-- Formulário de troca de turma -->
   <form id="form-switch" action="{{ url_for('switch_turma') }}" method="post">
+  <p>Selecione a nova turma do crismando e confirme:</p>
     <select name="switch-turma">
       {% for t in turmas %}
         <option value="{{ t.id }}">{{ t.turma_name }}</option>
@@ -121,7 +126,7 @@
 
   <!-- Formulário de exclusão -->
   <form id="form-delete" method="post">
-    <button type="submit">Excluir</button>
+    <button type="submit">Excluir Crismando</button>
   </form>
 
   <button onclick="CloseEditCrismandos()">Cancelar</button>

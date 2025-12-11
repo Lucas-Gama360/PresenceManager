@@ -36,7 +36,7 @@ def register_page():
 
 @app.get('/homepage')
 def home_page():
-    """Página de cadastro"""
+    """Página inicial"""
     if 'loged_user' not in session :
         return render_template("index.html")
     

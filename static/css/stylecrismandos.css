@@ -235,6 +235,112 @@
 #modaledit button{
     color: black;
 }
+/* ===== MODAL GERAL ===== */
+#modaledit-global {
+  border: none;
+  padding: 0;
+  border-radius: 20px;
+  width: 420px;
+  max-width: 90%;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Centralizar ao abrir */
+#modaledit-global[open] {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ===== PARÁGRAFOS (subtítulos / labels) ===== */
+#modaledit-global p {
+  font-weight: 600;
+  color: var(--marrom-logo, #9B6230);
+  font-size: 17px;
+  margin: 20px 0 5px 0;
+  text-align: center;
+}
+
+/* ===== FORMULÁRIOS ===== */
+#modaledit-global form {
+  margin: 15px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 80%;
+}
+
+/* SELECT */
+#modaledit-global select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 2px solid #b57b47;
+  font-size: 15px;
+  outline: none;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+#modaledit-global select:focus {
+  border-color: #7a4d25;
+}
+
+/* ===== BOTÕES ===== */
+#modaledit-global button,
+#modaledit-global input[type="submit"] {
+  background-color: #935e2e;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+/* Hover */
+#modaledit-global button:hover,
+#modaledit-global input[type="submit"]:hover {
+  background-color: #7a4d25;
+}
+
+/* BOTÃO EXCLUIR (vermelho) */
+#modaledit-global form#form-delete button {
+  background-color: #c0392b;
+}
+
+#modaledit-global form#form-delete button:hover {
+  background-color: #992d22;
+}
+
+/* BOTÃO CANCELAR */
+#modaledit-global > button:last-of-type {
+  background-color: #cccccc;
+  color: #333;
+  margin: 5px auto 20px auto;
+  width: 80%;
+}
+
+#modaledit-global > button:last-of-type:hover {
+  background-color: #b6b6b6;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 500px) {
+  #modaledit-global {
+    width: 95%;
+  }
+  #modaledit-global form {
+    width: 90%;
+  }
+}
+
 /* =============================== */
 /*            RESPONSIVO          */
 /* =============================== */
