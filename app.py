@@ -241,6 +241,23 @@ def switch_turma():
 
             conn.commit()
         return redirect(url_for('list_crismandos', msg='Troca de turma efetuada com sucesso!')) 
+
+#========================================
+# ROTAS GERENCIAMENTO DE ENCONTROS(ADMIN)
+#========================================
+@app.get("/listmeettings")
+def list_meetings():
+
+    if not 'admin' in session:
+        return render_template('index.html')
+    else:
+    
+        with get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT id, tema, meeting_id FROM meetings ORDER BY created_at")
+            encontros = cur.fetchall()
+
+        return render_template('managemeetings.html', encontros = encontros)
 #====================================
 # FUNÇÃO LOGOUT
 #====================================

@@ -36,9 +36,9 @@ CREATE TABLE IF NOT EXISTS turmas (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS meetings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date TEXT NOT NULL,
-    turma_id INTEGER NOT NULL,
-    FOREIGN KEY (turma_id) REFERENCES turmas(id)
+    tema TEXT NOT NULL,
+    meeting_date TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 """)
 cursor.execute("""
