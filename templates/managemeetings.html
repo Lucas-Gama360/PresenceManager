@@ -32,10 +32,23 @@
         <button class="button-logout">Sair</button>
       </form>
     </header>
-    <div class="container-principal">
-    
-    </div>
-      </main>
+    <main>
+      <div class="container-principal">
+         <h1>Gerenciamento de encontros</h1>
+         <button onclick="OpenModalMeetings()">Criar Encontro</button>
+         <dialog id="modalcreatemeetings">
+          <form>
+
+            <label for="tema">Digite o tema do Encontro:</label>
+            <input type="text" name="tema" required/>
+
+            <label for="meeting-date">Digite a data do Encontro:</label>
+            <input type="date" name="meeting-date"/>
+
+          </form>
+         </dialog>
+      </div>
+    </main>
 
 </body>
 </html>

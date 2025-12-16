@@ -23,6 +23,9 @@
     />
     <!-- Icone do lápis -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Icone de aleatoriedade-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   </head>
 
   <body>
@@ -46,9 +49,23 @@
 
     <h1>Crismandos</h1>
     <button onclick="OpenModalEditCrismandos()">Adicionar Crismando</button>
+    <button onclick="OpenRandomModal()">
+      <i class="fa-solid fa-shuffle"></i>
+      Redistribuir Turmas
+    </button>
     {% if msgcrismandos %}
     <p class="message-turmas">{{ msgcrismandos }}</p>
     {% endif %}    
+
+    <dialog id="modalconfirmation2">
+      <form action="{{ url_for('random_crismandos')}}" method="post">
+        <p> OBS: Tem certeza? Esta ação é irreversível</p>
+        <button type="submit">SIM</button>
+        <button type="button" onclick="CloseRandomModal()">NÃO</button>
+      </form>
+    </dialog>
+
+
     <!-- Nesse modal eu pego a requisição get que lista as turmas e seleciono id do novo crismando usando o JINJA onde
      tem um select somente, e dentro dele um for que gera opçoes de acordo com os id da turmas, aparecendo pros usuários o nome delas -->
     <dialog id="modaleditcrismandos">

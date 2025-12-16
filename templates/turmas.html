@@ -75,7 +75,7 @@
             {%for crismando in crismandos | sort(attribute='name')%}
                  {% if crismando.turma_id == turma.id %}
                  <tr>
-                     <td>{{loop.index}}</td> <td>{{crismando.name}}</td> </tr>
+                     <td>{{crismando.name}}</td> <td></td> </tr>
                  {%endif%}
              {%endfor%}
         </tbody>

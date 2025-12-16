@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask, render_template, redirect, url_for, request, session
 import os
+import random
 import secrets #pra poder gerar secret key aleatoria, segura(módulo nativo do python)
 from dotenv import load_dotenv
 
@@ -242,6 +243,60 @@ def switch_turma():
             conn.commit()
         return redirect(url_for('list_crismandos', msg='Troca de turma efetuada com sucesso!')) 
 
+@app.post('/randomcrismandos')
+def random_crismandos():
+    if not 'admin' in session:
+        return render_template('index.html')
+    else: 
+        with get_conn() as conn:
+            cur = conn.cursor()
+
+            #Buscar crismandos como LISTA DE INTS
+            cur.execute("SELECT id FROM crismandos")
+            crismandos = [row[0] for row in cur.fetchall()]
+
+            #Buscar turmas como LISTA DE INTS
+            cur.execute("SELECT id FROM turmas")
+            turmas = [row[0] for row in cur.fetchall()]  # row[0] pega a coluna da linha salva no fetchal, usamos assim para transformar em um array simples, não tuplas
+
+            if not turmas:
+                return redirect(url_for('list_crismandos', msg="Erro: Nenhuma turma cadastrada."))
+
+            if not crismandos:
+                return redirect(url_for('list_crismandos', msg="Erro: Nenhum crismando para redistribuir."))
+
+            # Embaralhar de forma aleatória
+            random.shuffle(crismandos)
+            random.shuffle(turmas)
+
+            # Atribuir turmas em ordem cíclica
+            atualizacoes = []
+            for i, crismando_id in enumerate(crismandos):
+                turma_id = turmas[i % len(turmas)]
+                atualizacoes.append((turma_id, crismando_id))  # ← agora são inteiros!
+
+            #Executar em lote — sem erros!
+            cur.executemany(
+                "UPDATE crismandos SET turma_id = ? WHERE id = ?",
+                atualizacoes
+            )
+
+            
+            conn.commit()
+            return redirect(url_for('list_crismandos', msg= "Turmas Redistribuidas com sucesso!"))
+
+        # 🔁 REDISTRIBUIÇÃO EQUILIBRADA (round-robin aleatório)
+        # 
+        # Objetivo: Distribuir N crismandos em T turmas, com diferença máxima de 1 crismando entre turmas.
+        # Estratégia:
+        #   1. Embaralhamos crismandos e turmas → justiça (ninguém sempre na turma 1).
+        #   2. Atribuímos em ordem cíclica usando: `turma_id = turmas[i % len(turmas)]`
+        #      - Ex: 10 crismandos + 3 turmas → índices: 0,1,2,0,1,2,0,1,2,0 → turmas: [A,B,C,A,B,C,A,B,C,A]
+        #      - Resultado: A=4, B=3, C=3 → equilíbrio perfeito.
+        #   3. Armazenamos cada atualização como (nova_turma_id, crismando_id),
+        #      na mesma ordem dos placeholders `?` no SQL: "SET turma_id = ? WHERE id = ?"
+        
+
 #========================================
 # ROTAS GERENCIAMENTO DE ENCONTROS(ADMIN)
 #========================================
@@ -254,7 +309,7 @@ def list_meetings():
     
         with get_conn() as conn:
             cur = conn.cursor()
-            cur.execute("SELECT id, tema, meeting_id FROM meetings ORDER BY created_at")
+            cur.execute("SELECT id, tema, meeting_date FROM meetings ORDER BY created_at")
             encontros = cur.fetchall()
 
         return render_template('managemeetings.html', encontros = encontros)

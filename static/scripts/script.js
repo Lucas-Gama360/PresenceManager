@@ -59,3 +59,12 @@ function CloseEditCrismandos() {
   const dialog = document.getElementById('modaledit-global');
   dialog.close();
 }
+
+function OpenRandomModal(){
+    const modal = document.getElementById('modalconfirmation2')
+    modal.showModal()
+}
+function CloseRandomModal(){
+    const modal = document.getElementById('modalconfirmation2')
+    modal.close()
+}
