@@ -4,20 +4,27 @@ import os
 import random
 import secrets #pra poder gerar secret key aleatoria, segura(módulo nativo do python)
 from dotenv import load_dotenv
+from pathlib import Path
 
-# Carrega automaticamente as variáveis de ambiente a partir do arquivo '.env'
-# Isso permite usar configurações como SECRET_KEY, DATABASE_URL, etc. sem precisar definir manualmente no terminal
-load_dotenv()
+# =========================
+# CARREGAR .env CORRETAMENTE
+# =========================
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / ".env", override=True)
 
 def get_conn(): 
-    conn = sqlite3.connect("data/dataBase.db")
+    conn = sqlite3.connect(BASE_DIR / "data" / "dataBase.db")
     conn.row_factory = sqlite3.Row
     return conn
 
 app = Flask(__name__)
+
 #define senha mestre
 # puxa do arquivo de enviroments
 MASTER_PASSWORD = os.environ.get('MASTER_PASSWORD')
+
+if not MASTER_PASSWORD:
+    raise RuntimeError("MASTER_PASSWORD não encontrada no .env")
 
 #  gera aleatoriamente a secret key
 app.config['SECRET_KEY'] = secrets.token_urlsafe(32)
@@ -42,6 +49,7 @@ def home_page():
         return render_template("index.html")
     
     return render_template('homepage.html')
+
 @app.get('/configpage')
 def config_page():
     """Página de configurações(admin)"""
@@ -49,6 +57,8 @@ def config_page():
         return render_template('index.html')
     else:
         return render_template('configpage.html')
+
+
 #====================================
 # ROTA NOVOS USUÁRIOS
 #====================================
@@ -67,15 +77,23 @@ def register_user():
             # Adiciona novo usuário
             conn = get_conn()
             cur = conn.cursor()
-            cur.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            cur.execute(
+                "INSERT INTO users (username, password) VALUES (?, ?)",
+                (username, password)
+            )
             conn.commit()
         except:
             return redirect(url_for('register_page', msg='Usuário e/ou e-mail já cadastrados.'))
         finally:
             conn.close()
         return redirect(url_for('index'))
-    else: #A senha mestre logicamente está inocrreta
-        return redirect(url_for('register_page', msg='A senha mestre digitada está incorreta. Não foi possível criar a conta'))
+    else: #A senha mestre logicamente está incorreta
+        return redirect(url_for(
+            'register_page',
+            msg='A senha mestre digitada está incorreta. Não foi possível criar a conta'
+        ))
+
+
 #====================================
 # ROTA LOGIN DE USUÁRIOS
 #====================================
@@ -86,233 +104,27 @@ def login_user():
     password = request.form.get('senha', '').strip()
 
     with get_conn() as conn:
-        
         cur = conn.cursor()
 
-        cur.execute("SELECT username, password, is_admin FROM users WHERE username = ? AND password = ?", (username, password))
+        cur.execute(
+            "SELECT username, password, is_admin FROM users WHERE username = ? AND password = ?",
+            (username, password)
+        )
+
         # user é a variavel que salva em formato de dicionario de python para ser possivel salvar sessões
         user = cur.fetchone()
+
         if user is None:
             return redirect(url_for('index', msg1='Usuário não encontrado'))
         
         # Salva na sessão, e ai usando JINJA Eu configuro o html do home page pro admin
-        # A sessão no Flask é um mecanismo que armazena dados temporários do usuário entre requisições, usando um cookie criptografado chamado session. Quando o usuário faz login, o Flask salva informações (como ID e nome)
-        # eu posso utilizar os dados da sessão novamente se necessário
-        # Aqui é configurado as sessões
+        # A sessão no Flask é um mecanismo que armazena dados temporários do usuário entre requisições
         session['loged_user'] = user['username']
         session['admin'] = user['is_admin'] 
 
         return redirect(url_for('home_page'))
-#====================================
-# ROTAS TURMAS(ADMIN)
-#====================================
-@app.get('/listturmas')
-def list_turmas():
-    """Página de edição de turma(admin)"""
-    if 'admin' not in session :
-        return render_template('index.html')
-    # puxa as msg das outras funções se eu tiver mandando, como na de deletar
-    msg = request.args.get('msg')
-    with get_conn() as conn:
-        cur = conn.cursor()
-        # Busca todas as turmas e ordena por nome
-        cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
-        turmas = cur.fetchall()
 
-        # Busca todas os crismandos e ordena por nome
-        cur.execute("SELECT id, name, turma_id FROM crismandos ORDER BY name")
-        crismandos = cur.fetchall()
-    
-    # 3. Renderiza o Template
-    # passa pro jinja a variavel turmas recebendo tudo que tem na tabela de turmas
-    return render_template('turmas.html', turmas=turmas, msgturmas=msg, crismandos = crismandos)
 
-@app.post('/deleteturma/<int:turma_id>/<nome>')
-def delete_turma(turma_id , nome):
-    if 'admin' not in session :
-        return render_template('index.html')
-    with get_conn() as conn:
-        cur = conn.cursor()
-            
-        # 1. Verificar se há crismandos vinculados
-        # cur.execute("SELECT COUNT(*) FROM crismandos WHERE turma_id = ?", (turma_id,))
-        # if cur.fetchone()[0] > 0:
-            # return redirect(url_for('list_turmas', msg='Erro: Não é possível excluir a turma. Existem crismandos vinculados a ela.'))
-                
-        # 2. Excluir a turma
-        cur.execute("DELETE FROM turmas WHERE id = ?", (turma_id,))
-        conn.commit()
-
-        # 2. Excluir os crismandos da turmas
-        cur.execute("DELETE FROM crismandos WHERE turma_id = ?", (turma_id,))
-        conn.commit()
-            
-        return redirect(url_for('list_turmas', msg=f'{nome} excluida com sucesso!'))
-
-@app.post("/creaturma")
-def create_turma():
-    if 'admin' not in session:
-        return redirect(url_for('index', msg='Acesso negado.'))
-
-    # 1. Captura o nome da turma e remove espaços em branco do início e do fim
-    turmaname = request.form.get('name', '').strip()
-
-    # 2. Verifica se o nome da turma está vazio após o strip()
-    if not turmaname:
-        # Se estiver vazio, redireciona de volta com uma mensagem de erro
-        return redirect(url_for('list_turmas', msg='Erro: O nome da turma não pode ser vazio.'))
-
-    # Se o nome for válido, prossegue com a inserção no banco de dados
-    try:
-        with get_conn() as conn:
-            cur = conn.cursor()
-            cur.execute("INSERT INTO turmas (turma_name) VALUES (?)", (turmaname,))
-            conn.commit()
-            return redirect(url_for('list_turmas', msg=f'"{turmaname}" criada com sucesso!'))
-    # Se cair aqui, o nome já existe (violação do UNIQUE)
-    except sqlite3.IntegrityError:
-        return redirect(url_for('list_turmas',msg=f'Erro: A turma "{turmaname}" já existe.'))
-    # captura qualquer erro inesperado
-    except Exception as e:
-        return redirect(url_for('list_turmas',msg=f'Erro inesperado: {str(e)}'))
-
-#====================================
-# ROTAS EDIÇÃO DE CRISMANDOS
-#====================================       
-@app.get("/listcrismandos")
-def list_crismandos():
-    # puxa as msg das outras funções se eu tiver mandando, como na de deletar
-    msg = request.args.get('msg')
-    if not 'admin' in session:
-        return render_template('index.html')
-    else:
-        with get_conn() as conn:
-            cur = conn.cursor()
-            # Busca todas as turmas e ordena por nome
-            cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
-            turmas = cur.fetchall()
-            # Busca todas os crismandos e ordena por nome
-            cur.execute("SELECT id, name, turma_id FROM crismandos ORDER BY name")
-            crismandos = cur.fetchall()
-            return render_template('crismandos.html', turmas = turmas, msgcrismandos =msg, crismandos = crismandos)
-        
-@app.post("/addcrismandos/")
-def add_crismandos():
-    if not 'admin' in session:
-        return render_template('index.html')
-    
-    namecrismando = request.form.get('add', '').strip() #strip retira o espaço do input
-    turma_id = request.form.get("turma_id")
-    if not namecrismando:
-        return redirect(url_for('list_crismandos', msg='Erro: O nome do crismando não pode ser vazio.'))
-    try:
-        with get_conn() as conn:
-            cur = conn.cursor()
-            cur.execute("INSERT INTO crismandos (name, turma_id) VALUES (?, ?)", (namecrismando, turma_id))
-            nome = cur.fetchall()
-            conn.commit()
-        return redirect(url_for('list_crismandos', msg='Crismando adicionado com sucesso!'))
-    # violação do UNIQUE, ou seja, o crismando já está cadastrado
-    except sqlite3.IntegrityError:
-        return redirect(url_for('list_crismandos', msg=f'Erro: O"{namecrismando}" já está cadastrado.'))
-
-@app.post("/deletecrismandos/<int:crismando_id>")
-def delete_crismandos(crismando_id):
-    if not 'admin' in session:
-        return render_template('index.html')
-    else:
-        with get_conn() as conn:
-            cur = conn.cursor()
-            cur.execute("DELETE FROM crismandos WHERE id = ?", (crismando_id,))
-            conn.commit()
-        return redirect(url_for('list_crismandos', msg='Crismando retirado com sucesso!')) 
-
-@app.post("/switchturma")
-def switch_turma():
-    crismando_id = int(request.form.get('crismando_id'))
-    nova_turma = int(request.form.get('switch-turma'))
-    if not 'admin' in session:
-        return render_template('index.html')
-    else:
-        with get_conn() as conn:
-            cur = conn.cursor()
-            # A cláusula SET é usada para especificar quais colunas devem ser modificadas e qual será o novo valor para essas colunas.
-            # A cláusula WHERE é usada para filtrar os registros. Ela define a condição que deve ser verdadeira para que um registro seja afetado pelo comando UPDATE.
-            cur.execute("UPDATE crismandos SET turma_id = ? WHERE id = ?", (nova_turma, crismando_id))
-
-            conn.commit()
-        return redirect(url_for('list_crismandos', msg='Troca de turma efetuada com sucesso!')) 
-
-@app.post('/randomcrismandos')
-def random_crismandos():
-    if not 'admin' in session:
-        return render_template('index.html')
-    else: 
-        with get_conn() as conn:
-            cur = conn.cursor()
-
-            #Buscar crismandos como LISTA DE INTS
-            cur.execute("SELECT id FROM crismandos")
-            crismandos = [row[0] for row in cur.fetchall()]
-
-            #Buscar turmas como LISTA DE INTS
-            cur.execute("SELECT id FROM turmas")
-            turmas = [row[0] for row in cur.fetchall()]  # row[0] pega a coluna da linha salva no fetchal, usamos assim para transformar em um array simples, não tuplas
-
-            if not turmas:
-                return redirect(url_for('list_crismandos', msg="Erro: Nenhuma turma cadastrada."))
-
-            if not crismandos:
-                return redirect(url_for('list_crismandos', msg="Erro: Nenhum crismando para redistribuir."))
-
-            # Embaralhar de forma aleatória
-            random.shuffle(crismandos)
-            random.shuffle(turmas)
-
-            # Atribuir turmas em ordem cíclica
-            atualizacoes = []
-            for i, crismando_id in enumerate(crismandos):
-                turma_id = turmas[i % len(turmas)]
-                atualizacoes.append((turma_id, crismando_id))  # ← agora são inteiros!
-
-            #Executar em lote — sem erros!
-            cur.executemany(
-                "UPDATE crismandos SET turma_id = ? WHERE id = ?",
-                atualizacoes
-            )
-
-            
-            conn.commit()
-            return redirect(url_for('list_crismandos', msg= "Turmas Redistribuidas com sucesso!"))
-
-        # 🔁 REDISTRIBUIÇÃO EQUILIBRADA (round-robin aleatório)
-        # 
-        # Objetivo: Distribuir N crismandos em T turmas, com diferença máxima de 1 crismando entre turmas.
-        # Estratégia:
-        #   1. Embaralhamos crismandos e turmas → justiça (ninguém sempre na turma 1).
-        #   2. Atribuímos em ordem cíclica usando: `turma_id = turmas[i % len(turmas)]`
-        #      - Ex: 10 crismandos + 3 turmas → índices: 0,1,2,0,1,2,0,1,2,0 → turmas: [A,B,C,A,B,C,A,B,C,A]
-        #      - Resultado: A=4, B=3, C=3 → equilíbrio perfeito.
-        #   3. Armazenamos cada atualização como (nova_turma_id, crismando_id),
-        #      na mesma ordem dos placeholders `?` no SQL: "SET turma_id = ? WHERE id = ?"
-        
-
-#========================================
-# ROTAS GERENCIAMENTO DE ENCONTROS(ADMIN)
-#========================================
-@app.get("/listmeettings")
-def list_meetings():
-
-    if not 'admin' in session:
-        return render_template('index.html')
-    else:
-    
-        with get_conn() as conn:
-            cur = conn.cursor()
-            cur.execute("SELECT id, tema, meeting_date FROM meetings ORDER BY created_at")
-            encontros = cur.fetchall()
-
-        return render_template('managemeetings.html', encontros = encontros)
 #====================================
 # FUNÇÃO LOGOUT
 #====================================
@@ -323,6 +135,5 @@ def logout_user():
     return render_template('index.html')
 
 
-    
 if __name__ == "__main__":
     app.run(debug=True)
