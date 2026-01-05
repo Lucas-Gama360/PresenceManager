@@ -68,3 +68,23 @@ function CloseRandomModal(){
     const modal = document.getElementById('modalconfirmation2')
     modal.close()
 }
+function OpenModalMeetings(){
+    const modal = document.getElementById('modalcreatemeetings')
+    modal.showModal()
+}
+function CloseModalMeetings(){
+    const modal = document.getElementById('modalcreatemeetings')
+    modal.close()
+}
+function OpenModalEditMeeting(Meetingid){
+    const modal = document.getElementById('modaleditmeeting')
+    const Meetingidinput = document.getElementById('meeting-id')
+
+    Meetingidinput.value = Meetingid
+
+    modal.showModal()
+}
+function CloseModalEditMeeting(){
+    const modal = document.getElementById('modaleditmeeting')
+    modal.close()
+}

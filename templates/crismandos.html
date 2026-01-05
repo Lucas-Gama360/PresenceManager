@@ -110,7 +110,6 @@
                     {% if crismando.turma_id == turma.id %}
                     {% set _ = counter.append(counter.pop() + 1) %}
                         <tr>
-                          <!-- o loop.index é um contador nativo automático fornecido dentro de qualquer loop -->
                             <td>{{counter[0]}}</td>
                             <td>{{crismando.name}}</td>
                             <td>

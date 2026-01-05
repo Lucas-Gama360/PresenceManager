@@ -1,0 +1,297 @@
+/* ============================================================ */
+/* ESTILOS ESPECÍFICOS PARA MANAGEMEETINGS            */
+/* ============================================================ */
+
+/* Variável de cor (Reafirmando para garantir escopo) */
+:root {
+    --marrom-logo: #9B6230;
+}
+
+/* =============================== */
+/* TÍTULO + BOTÃO PRINCIPAL     */
+/* =============================== */
+
+/* Ajuste do container principal para centralizar itens */
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.container-principal h1 {
+    text-align: center;
+    font-size: 32px;
+    color: var(--marrom-logo);
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+/* Botão "Criar Encontro" - Estilo pílula igual ao crismandos */
+.container-principal > button {
+    display: block;
+    margin: 0 auto 40px auto;
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container-principal > button:hover {
+    background-color: #7a4e27;
+    transform: translateY(-2px);
+}
+
+/* =============================== */
+/* MENSAGENS DE FEEDBACK      */
+/* =============================== */
+.message-managemeetings {
+    background-color: #e6ffe6;
+    color: #006600;
+    border: 1px solid #00cc00;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 10px auto 30px auto;
+    width: fit-content;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* =============================== */
+/* GRID DE ENCONTROS (Cards) */
+/* =============================== */
+
+.grid {
+    display: grid;
+    /* Cria colunas automaticamente com largura mínima de 280px */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 50px;
+}
+
+/* Cartão individual do encontro */
+.meeting {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 5px solid var(--marrom-logo); /* Detalhe visual no topo */
+}
+
+.meeting:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.meeting h2 {
+    font-size: 18px;
+    color: #444;
+    margin: 8px 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Destaca o Tema (primeiro h2) */
+.meeting h2:first-of-type {
+    color: var(--marrom-logo);
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* Botão "Excluir" dentro do card */
+.meeting button {
+    margin-top: 20px;
+    background-color: white;
+    color: #c0392b;
+    border: 2px solid #c0392b;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.meeting button:hover {
+    background-color: #c0392b;
+    color: white;
+}
+
+/* =============================== */
+/* MODAIS              */
+/* =============================== */
+
+/* Estilo Base para os Dialogs */
+dialog {
+    padding: 0;
+    border: none;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+/* Animação de entrada */
+dialog[open] {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -45%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Centralização Fixa */
+#modalcreatemeetings[open], 
+#modaleditmeeting[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+/* --- Modal de Criação --- */
+#modalcreatemeetings form {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 15px;
+}
+
+#modalcreatemeetings label {
+    color: var(--marrom-logo);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#modalcreatemeetings input[type="text"],
+#modalcreatemeetings input[type="date"] {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: 'Poppins', sans-serif;
+}
+
+#modalcreatemeetings input:focus {
+    border-color: var(--marrom-logo);
+}
+
+/* Botões do Modal Criação */
+#modalcreatemeetings button[type="submit"] {
+    margin-top: 10px;
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#modalcreatemeetings button[type="submit"]:hover {
+    background-color: #7a4e27;
+}
+
+#modalcreatemeetings button[type="button"] {
+    background-color: #f0f0f0;
+    color: #555;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#modalcreatemeetings button[type="button"]:hover {
+    background-color: #e0e0e0;
+}
+
+/* --- Modal de Exclusão (Confirmação) --- */
+#modaleditmeeting form {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 15px;
+    text-align: center;
+}
+
+#modaleditmeeting p {
+    color: #c0392b; /* Vermelho alerta */
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#modaleditmeeting button[type="submit"] {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#modaleditmeeting button[type="submit"]:hover {
+    background-color: #a93226;
+}
+
+#modaleditmeeting button[onclick*="Close"] {
+    background-color: #eee;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#modaleditmeeting button[onclick*="Close"]:hover {
+    background-color: #ddd;
+}
+
+/* =============================== */
+/* RESPONSIVIDADE        */
+/* =============================== */
+
+@media (max-width: 600px) {
+    .grid {
+        /* Em telas pequenas, força uma coluna se necessário, 
+           mas o auto-fill já ajuda bastante. Ajuste de margem: */
+        width: 95%;
+        gap: 15px;
+    }
+
+    .container-principal h1 {
+        font-size: 26px;
+    }
+
+    .container-principal > button {
+        width: 80%;
+    }
+}
