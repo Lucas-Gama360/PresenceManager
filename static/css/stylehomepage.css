@@ -131,11 +131,134 @@ header {
   font-weight: 600;
   font-size: 1rem;
   transition: background-color 0.2s;
+  border-style: none;
 }
 
 .card .btn:hover {
   background-color: #7a4d24;
   text-decoration: none;
+}
+/* ============================================================ */
+/* ESTILIZAÇÃO DO MODAL DE CHAMADA (HOMEPAGE)                  */
+/* ============================================================ */
+
+/* --- Configuração da Caixa do Modal --- */
+#modalchamada {
+    padding: 30px;
+    border: none;
+    border-radius: 15px;
+    width: 400px; /* Largura padrão agradável */
+    max-width: 90%; /* Responsivo para celulares */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Sombra suave e profunda */
+    background-color: white;
+    color: #333;
+}
+
+/* Centralização Fixa na Tela quando aberto */
+#modalchamada[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    animation: fadeInModal 0.3s ease-out; /* Animação suave */
+}
+
+/* Fundo escurecido atrás do modal */
+#modalchamada::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px); /* Efeito de desfoque moderno */
+}
+
+/* --- Títulos e Textos dentro do Modal --- */
+#modalchamada p {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--marrom-logo); /* Usa a cor da identidade */
+    margin-bottom: 8px;
+    margin-top: 10px;
+}
+
+/* Texto de aviso caso não haja encontros */
+#modalchamada > p:first-of-type {
+    text-align: center;
+}
+
+/* --- Formulário e Inputs (Selects) --- */
+#modalchamada form {
+    display: flex;
+    flex-direction: column;
+}
+
+#modalchamada select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd; /* Borda cinza suave */
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #444;
+    background-color: #fff;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+#modalchamada select:focus {
+    border-color: var(--marrom-logo); /* Fica marrom ao clicar */
+}
+
+/* --- Botões --- */
+
+/* Botão "Pronto!" (Submit) */
+#modalchamada button[type="submit"] {
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+#modalchamada button[type="submit"]:hover {
+    background-color: #7a4e27;
+}
+
+/* Botão "Cancelar" (Fora do form ou botão secundário) */
+#modalchamada button[onclick*="Close"] {
+    background-color: #f0f0f0;
+    color: #555;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+#modalchamada button[onclick*="Close"]:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* --- Animação de Entrada --- */
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
 @media (max-width: 1100px){
 .title-center{

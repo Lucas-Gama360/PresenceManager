@@ -78,16 +78,17 @@ CREATE TABLE IF NOT EXISTS meetings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tema TEXT NOT NULL,
     meeting_date TEXT NOT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 """)
 
+# 0=presenca/ 1=falta/ 2=falta justificada
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS attendance (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     crismando_id INTEGER NOT NULL,
     meeting_id INTEGER NOT NULL,
     status INTEGER NOT NULL CHECK (status IN (0, 1, 2)),
+    UNIQUE(crismando_id, meeting_id),
     FOREIGN KEY (crismando_id) REFERENCES crismandos(id),
     FOREIGN KEY (meeting_id) REFERENCES meetings(id)
 );

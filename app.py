@@ -5,7 +5,7 @@ import random
 import secrets #pra poder gerar secret key aleatoria, segura(módulo nativo do python)
 from pathlib import Path
 from dotenv import load_dotenv
-
+from datetime import datetime, timedelta
 
 # =========================
 # LOCALIZAÇÃO DO PROJETO
@@ -56,6 +56,23 @@ def home_page():
     """Página inicial"""
     if 'loged_user' not in session :
         return render_template("index.html")
+    # aqui eu estarei fazendo algumas interações com o db para o usuario poder carregar varias coisas sem precisar de url independente
+    with get_conn() as conn:
+        cur = conn.cursor()
+        # Selecionamos encontros onde a data de criação é maior ou igual a "agora menos 1 dia"
+        cur.execute("""
+            SELECT id, tema, meeting_date 
+            FROM meetings 
+            WHERE created_at >= datetime('now', '-1 day', 'localtime')
+            ORDER BY created_at DESC
+        """)
+        encontros = cur.fetchall()
+        
+        #Busco as turmas para o catequista escolher
+        cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
+        turmas = cur.fetchall()
+        conn.commit()
+    return render_template('homepage.html', encontros=encontros, turmas=turmas)
     
     return render_template('homepage.html')
 @app.get('/configpage')
@@ -240,7 +257,9 @@ def delete_crismandos(crismando_id):
         with get_conn() as conn:
             cur = conn.cursor()
             cur.execute("DELETE FROM crismandos WHERE id = ?", (crismando_id,))
+            cur.execute("DELETE FROM attendance WHERE crismando_id = ?", (crismando_id,))
             conn.commit()
+            
         return redirect(url_for('list_crismandos', msg='Crismando retirado com sucesso!')) 
 
 @app.post("/switchturma")
@@ -355,6 +374,75 @@ def delete_meeting():
             cur.execute("DELETE FROM meetings WHERE id = ?", (meetingid,))
             conn.commit()
         return redirect(url_for('list_meetings', msg = 'Encontro deletado com sucesso!'))
+    
+#========================================
+# ROTAS REALIZAÇÃO DE CHAMADAS
+#========================================
+#'/deleteturma/<int:turma_id>/<nome>'
+@app.post("/requirementsattendance")
+def requirements_attendance():
+    if 'loged_user' not in session:
+        return render_template("index.html")
+
+    encontro_id = request.form.get('openmeetings')
+    turma_id = request.form.get('turmaattendance')
+
+    # Salva os IDs no session ou redireciona com eles
+    return redirect(url_for('list_attendance', encontro_id=encontro_id, turma_id=turma_id))
+
+@app.get("/listattendance")
+def list_attendance():
+    encontro_id = request.args.get('encontro_id')
+    turma_id = request.args.get('turma_id')
+
+    with get_conn() as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM meetings WHERE id = ?", (encontro_id,))
+        encontroselect = cur.fetchone()
+
+        cur.execute("SELECT * FROM turmas WHERE id = ?", (turma_id,))
+        turmaselect = cur.fetchone()
+
+        cur.execute("SELECT * FROM crismandos WHERE turma_id = ?", (turma_id,))
+        crismandos = cur.fetchall()
+
+    return render_template('attendance.html', encontroselect=encontroselect, turmaselect=turmaselect, crismandos=crismandos)
+
+@app.post("/saveattendance")
+def save_attendance():
+    if 'loged_user' not in session:
+        return render_template("index.html")
+    # 1. O seu HTML tem: <input type="hidden" name="meeting_id" value="{{ encontroselect.id }}">
+    # Então aqui buscamos pelo nome 'meeting_id'
+    meeting_id = request.form.get('meeting_id')
+    
+    with get_conn() as conn:
+        cur = conn.cursor()
+        
+        # 2. Vamos varrer todos os campos que o formulário enviou
+        for key, value in request.form.items():
+            
+            # 3. No seu HTML, o select tem: name="status_{{aluno.id}}"
+            # Se o aluno tem ID 7, o nome do campo chega como "status_7"
+            if key.startswith('status_'):
+                
+                # 4. Tiramos o "status_" para sobrar só o número do ID do aluno
+                crismando_id = key.replace('status_', '')
+                
+                # 5. O valor (value) será 0 (Presente), 1 (Falta) ou 2 (Justificado)
+                status = int(value)
+                
+                # 6. AGORA A INTERAÇÃO COM O BANCO:
+                # Inserimos na tabela 'attendance' que você criou no create_db.py
+                cur.execute("""
+                    INSERT OR REPLACE INTO attendance (crismando_id, meeting_id, status)
+                    VALUES (?, ?, ?)
+                """, (crismando_id, meeting_id, status))
+        
+        conn.commit()
+    
+    return redirect(url_for('home_page', msg="Chamada realizada com sucesso!"))
+
 #====================================
 # FUNÇÃO LOGOUT
 #====================================

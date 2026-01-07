@@ -42,7 +42,7 @@
           <article class="card">
             <h2>Chamada Presença</h2>
             <p>Registre a presença dos crismandos nas reuniões.</p>
-            <a href="" class="btn">Acessar</a>
+            <button class="btn" onclick="Openmodalchamada()">Acessar</button>
           </article>
 
           <!-- Card 2: Lista de Crismandos (todos veem) -->
@@ -73,6 +73,30 @@
       </main>
 
 
+      <dialog id="modalchamada">
+        {% if encontros %}
+        <form action="{{ url_for('requirements_attendance') }}" method="post">
+          <p>Selecione um encontro para realizar chamada:</p>
+          <select name="openmeetings" id="openmeetings">
+            {%for encontro in encontros%}
+              <option value="{{encontro.id}}">{{encontro.tema}}</option>
+            {%endfor%}
+          </select>
+          <p>Escolha uma turma para realizar chamada:</p>
+          <select name="turmaattendance" id="turmaattendance">
+            {%for turma in turmas%}
+            <option value="{{turma.id}}">{{turma.turma_name}}</option>
+            {%endfor%}
+          </select>
+          <button type="submit">Pronto!</button>
+        </form>
+        {%else%}
+        <p>Não há encontros disponíveis para realizar chamada, volte depois!</p>
+        {%endif%}
+        <button onclick="Closemodalchamada()">Cancelar</button>
+      </dialog>
+
     </div>
+    <script src="{{url_for('static', filename='scripts/script.js')}}"></script>
   </body>
 </html>

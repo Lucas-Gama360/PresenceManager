@@ -142,7 +142,12 @@
 
   <!-- Formulário de exclusão -->
   <form id="form-delete" method="post">
-    <button type="submit">Excluir Crismando</button>
+    <button type="button" onclick="OpenModalDeleteCrismando()">Excluir Crismando</button>
+    <dialog id="deletecrismandoconfirmation">
+      <p>OBS: Esta ação é irrreversivel</p>
+        <button type="submit">SIM</button>
+        <button type="button" id="btnn" onclick="CloseModalDeleteCrismando()">NÃO</button>
+    </dialog>
   </form>
 
   <button onclick="CloseEditCrismandos()">Cancelar</button>

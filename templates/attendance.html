@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/stylehomepage.css')}}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static', filename='images/faviconcrisma.ico')}}"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+</head>
+<body>
+    <header>
+      <div class="header-left">
+        <img
+          src="{{url_for('static', filename='images/logocrismamaior.png')}}"
+          alt="Logo da crisma"
+          class="logo"
+        />
+        <h1 class="title-center" onclick="window.location.href='/homepage'" >Chamada da Crisma</h1>
+      </div>
+      <form action="{{url_for('logout_user')}}" method="post">
+        <button class="button-logout">Sair</button>
+      </form>
+    </header>
+    <main>
+        <div class="container-principal">
+            <h1>Encontro: {{encontroselect.tema}}</h1>
+            <form action="{{url_for('save_attendance')}}" method="post">
+                <table>
+                  <tr>
+                    <th>CHAMADA {{turmaselect.turma_name}}</th>
+                  </tr>
+                  {%for crismando in crismandos%}
+                  <tr>
+                    <td>{{crismando.name}}</td>
+                    <td>
+                      <select name="status_{{crismando.id}}" id="statuscrismando" required>
+                        <option value="" selected disabled>Selecione</option>
+                        <option value="0">P</option>
+                        <option value="1">F</option>
+                        <option value="2">FJ</option>
+                      </select>
+                    </td>
+                  </tr>
+                  {%endfor%}
+                </table>
+                <input type="hidden" value="{{encontroselect.id}}" name="meeting_id">
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </main>
+</body>

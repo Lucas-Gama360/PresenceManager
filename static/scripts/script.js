@@ -88,3 +88,19 @@ function CloseModalEditMeeting(){
     const modal = document.getElementById('modaleditmeeting')
     modal.close()
 }
+function Openmodalchamada(){
+    const modal = document.getElementById('modalchamada')
+    modal.showModal() 
+}
+function Closemodalchamada(){
+    const modal = document.getElementById('modalchamada')
+    modal.close() 
+}
+function OpenModalDeleteCrismando(){
+    const modal = document.getElementById('deletecrismandoconfirmation')
+    modal.showModal()   
+}
+function CloseModalDeleteCrismando(){
+    const modal = document.getElementById('deletecrismandoconfirmation')
+    modal.close()   
+}

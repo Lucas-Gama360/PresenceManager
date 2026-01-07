@@ -405,7 +405,89 @@
 #modalconfirmation2 button[type="button"]:hover {
     background-color: #e0e0e0;
 }
+/* =============================== */
+/* MODAL EXCLUIR CRISMANDO       */
+/* =============================== */
 
+/* Estilo base do dialog (fechado) */
+#deletecrismandoconfirmation {
+    padding: 0;
+    border: none;
+    border-radius: 20px; /* Bordas bem arredondadas conforme a imagem */
+    width: 380px; /* Um pouco mais largo para o texto caber bem */
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    background-color: white;
+}
+
+/* Estilo quando o modal está ABERTO */
+#deletecrismandoconfirmation[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+
+    /* Grid Layout */
+    display: grid;
+    grid-template-areas: 
+        "text text"
+        "sim nao";
+    grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
+    gap: 20px; /* Espaço entre os botões e o texto */
+    padding: 40px 30px; /* Espaçamento interno generoso */
+}
+
+/* O Texto de aviso */
+#deletecrismandoconfirmation p {
+    grid-area: text;
+    font-size: 1.25em; /* Fonte um pouco maior */
+    font-weight: 700; /* Negrito */
+    font-style: italic; /* Itálico (conforme a imagem) */
+    text-transform: uppercase; /* Força o texto para MAIÚSCULAS */
+    color: var(--marrom-logo); /* Usa a cor marrom definida no seu sistema */
+    text-align: center;
+    line-height: 1.4; /* Espaçamento entre as linhas do texto */
+    margin: 0 0 10px 0;
+}
+
+/* Estilo comum aos botões */
+#deletecrismandoconfirmation button {
+    padding: 12px 0; /* Altura do botão */
+    border-radius: 10px; /* Botões arredondados */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    width: 100%; /* Ocupa todo o espaço da coluna do grid */
+}
+
+/* Botão SIM (Vermelho escuro) */
+#deletecrismandoconfirmation button[type="submit"] {
+    grid-area: sim;
+    background-color: #cc0000; /* Vermelho forte */
+    color: white;
+    border: none;
+    box-shadow: 0 2px 5px rgba(204, 0, 0, 0.3);
+}
+
+#deletecrismandoconfirmation button[type="submit"]:hover {
+    background-color: #a30000;
+    transform: translateY(-2px);
+}
+
+/* Botão NÃO (Cinza claro) */
+#btnn {
+    grid-area: nao;
+    background-color: #f0f0f0; /* Fundo cinza bem claro */
+    color: #333; /* Texto escuro */
+    border: 1px solid #ddd; /* Borda sutil */
+}
+
+#deletecrismandoconfirmation button[type="button"]:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
 /* ===== RESPONSIVO ===== */
 @media (max-width: 500px) {
   #modaledit-global {
