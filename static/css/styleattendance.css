@@ -1,0 +1,228 @@
+/* ============================================================ */
+/* STYLEATTENDANCE.CSS - CHAMADA (RESPONSIVO E LEGÍVEL)         */
+/* ============================================================ */
+
+:root {
+    --marrom-logo: #9B6230;
+    --marrom-escuro: #7a4e27;
+    --cinza-fundo: #fcfcfc;
+    --texto: #333;
+    --borda: #ddd;
+}
+
+body {
+    background-color: var(--cinza-fundo);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+/* =============================== */
+/* CONTAINER PRINCIPAL             */
+/* =============================== */
+
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 900px; /* Um pouco mais largo no desktop */
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 80px;
+    box-sizing: border-box; /* Garante que padding não estoure a largura */
+}
+
+/* Título do Encontro */
+.container-principal h1 {
+    text-align: center;
+    font-size: 26px;
+    color: var(--marrom-logo);
+    margin: 20px 0 30px 0;
+    font-weight: 500;
+}
+
+.container-principal form {
+    width: 100%;
+}
+
+/* =============================== */
+/* TABELA DE CHAMADA               */
+/* =============================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--borda);
+    margin-bottom: 30px;
+    table-layout: fixed; /* Importante para respeitar larguras */
+}
+
+th {
+    background-color: var(--marrom-logo);
+    color: white;
+    padding: 15px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    color: #555;
+    font-size: 1rem;
+}
+
+/* --- Ajuste Inteligente de Colunas --- */
+
+/* Coluna 1: Nome */
+td:first-child {
+    text-align: left;
+    width: 55%; /* No desktop, nome ocupa um pouco mais da metade */
+    font-weight: 500;
+    color: #444;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Se o nome for gigante, põe "..." */
+}
+
+/* Coluna 2: Select */
+td:last-child {
+    width: 45%; /* Garante bom espaço para o select no desktop também */
+    text-align: center;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: #fffbf7; 
+}
+
+/* =============================== */
+/* SELECT (DROPDOWN)               */
+/* =============================== */
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    
+    /* Largura total da célula, mas com limite máximo para não ficar feio em telas gigantes */
+    width: 100%; 
+    max-width: 200px; 
+    
+    padding: 10px 35px 10px 15px; /* Espaço na direita para a seta */
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    color: #444;
+    font-weight: 600;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left; /* Texto alinhado à esquerda facilita leitura */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    
+    /* Seta customizada */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239B6230%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px auto;
+}
+
+select:focus {
+    border-color: var(--marrom-logo);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(155, 98, 48, 0.1);
+}
+
+/* Cores das opções */
+option[value="0"] { color: #28a745; font-weight: bold; }
+option[value="1"] { color: #dc3545; font-weight: bold; }
+option[value="2"] { color: #007bff; font-weight: bold; }
+
+/* =============================== */
+/* BOTÃO SALVAR                    */
+/* =============================== */
+
+button[type="submit"] {
+    display: block;
+    margin: 0 auto;
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    padding: 14px 0; /* Padding vertical, largura definida abaixo */
+    width: 200px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"]:hover {
+    background-color: var(--marrom-escuro);
+    transform: translateY(-2px);
+}
+
+/* =============================== */
+/* RESPONSIVIDADE (MOBILE)         */
+/* =============================== */
+
+@media (max-width: 600px) {
+    .container-principal {
+        padding: 10px; /* Reduz padding lateral para ganhar espaço */
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .container-principal h1 {
+        font-size: 20px;
+        margin: 15px 0;
+    }
+
+    table {
+        margin-bottom: 20px;
+    }
+
+    th {
+        font-size: 0.9rem;
+        padding: 12px 5px;
+    }
+
+    td {
+        padding: 10px 5px; /* Menos padding lateral nas células */
+        font-size: 0.9rem;
+    }
+
+    /* MUDANÇA CRUCIAL: Distribuição de espaço no celular */
+    td:first-child {
+        width: 45%; /* Nome fica com um pouco menos da metade */
+    }
+
+    td:last-child {
+        width: 55%; /* Select ganha a maioria do espaço para aparecer o texto */
+    }
+
+    select {
+        max-width: none; /* Remove limite de largura */
+        width: 100%; /* Ocupa todo o espaço da célula */
+        font-size: 0.9rem;
+        padding-left: 10px;
+        height: 42px; /* Altura confortável para o dedo */
+    }
+
+    button[type="submit"] {
+        width: 100%; /* Botão ocupa largura total para facilitar clique */
+        border-radius: 12px;
+    }
+}

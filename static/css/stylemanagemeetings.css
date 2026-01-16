@@ -113,17 +113,31 @@
 }
 
 /* Botão "Excluir" dentro do card */
+/* No arquivo stylemanagemeetings.css */
+
 .meeting button {
-    margin-top: 20px;
-    background-color: white;
-    color: #c0392b;
-    border: 2px solid #c0392b;
-    padding: 8px 20px;
-    border-radius: 8px;
+    margin-top: 15px;
+    background-color: transparent;
+    color: #c0392b; /* Vermelho */
+    border: 1px solid #c0392b;
+    
+    /* MUDANÇA AQUI: width auto deixa ele do tamanho do texto */
+    width: auto; 
+    display: inline-block;
+    
+    /* Tamanho do botão */
+    padding: 6px 20px; 
+    border-radius: 20px;
+    
+    font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
-    width: 100%;
+    transition: all 0.2s;
+}
+
+.meeting button:hover {
+    background-color: #c0392b;
+    color: white;
 }
 
 .meeting button:hover {
@@ -283,7 +297,7 @@ dialog[open] {
     .grid {
         /* Em telas pequenas, força uma coluna se necessário, 
            mas o auto-fill já ajuda bastante. Ajuste de margem: */
-        width: 95%;
+        width: 85%;
         gap: 15px;
     }
 

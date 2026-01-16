@@ -1,0 +1,347 @@
+/* ============================================================ */
+/* ESTILOS ESPECÍFICOS PARA EDIT ATTENDANCE (HISTÓRICO)         */
+/* ============================================================ */
+
+:root {
+    --marrom-logo: #9B6230;
+    --cinza-fundo: #f8f9fa;
+    --texto-escuro: #444;
+}
+
+/* =============================== */
+/* LAYOUT PRINCIPAL                */
+/* =============================== */
+
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.container-principal h1 {
+    text-align: center;
+    font-size: 32px;
+    color: var(--marrom-logo);
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+.section-title {
+    font-size: 24px;
+    color: var(--texto-escuro);
+    margin: 40px 0 20px 0;
+    font-weight: 600;
+    border-bottom: 3px solid var(--marrom-logo);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+/* =============================== */
+/* 1. GRID DE HISTÓRICO (CARDS)    */
+/* =============================== */
+
+.grid-container {
+    display: grid;
+    /* Adapta colunas automaticamente: min 280px */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.grid-item {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 5px solid var(--marrom-logo);
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.grid-item h3 {
+    color: var(--marrom-logo);
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.grid-item p {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* No arquivo styleeditattendance.css */
+
+.btn-edit {
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    
+    /* 1. Ajuste o tamanho interno (padding) se quiser ele mais baixo */
+    padding: 8px 24px; 
+    
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1.0rem;
+    cursor: pointer;
+
+    /* 2. MUDANÇA PRINCIPAL: Mude de 100% para auto ou uma largura fixa */
+    width: auto; 
+    /* width: 150px; <--- Se preferir um tamanho fixo, use isso */
+
+    transition: 0.2s;
+    
+    /* Opcional: garante que ele não fique colado no texto acima se o card for pequeno */
+    margin-top: 5px; 
+}
+
+.btn-edit:hover {
+    background-color: #7a4e27;
+}
+
+/* =============================== */
+/* 2. TABELA DE VISÃO GERAL        */
+/* =============================== */
+
+.table-container {
+    width: 90%;
+    max-width: 1200px;
+    overflow-x: auto; /* Scroll horizontal no mobile */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+    border: 1px solid #eee;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Garante que as linhas se toquem */
+    min-width: 600px;
+}
+
+thead {
+    background-color: var(--marrom-logo);
+}
+
+thead th {
+    color: white;
+    padding: 15px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    
+    /* NOVA LINHA VERTICAL NO CABEÇALHO */
+    /* Uma linha branca semi-transparente para separar as datas no fundo marrom */
+    border-right: 1px solid rgba(255, 255, 255, 0.3); 
+}
+
+tbody td {
+    padding: 12px;
+    text-align: center;
+    
+    /* LINHAS HORIZONTAIS E VERTICAIS NO CORPO */
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee; /* Linha vertical cinza */
+    
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Remove a linha da última coluna para não ficar borda dupla com o container */
+thead th:last-child,
+tbody td:last-child {
+    border-right: none;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: #f9f4f0;
+}
+
+/* --- COLUNA FIXA (NOME DO CRISMANDO) --- */
+table th:first-child,
+table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: white;
+    
+    /* Aumentei um pouco a borda aqui para separar bem o Nome das Datas */
+    border-right: 2px solid #ddd; 
+    
+    text-align: left;
+    min-width: 150px;
+}
+
+thead th:first-child {
+    background-color: var(--marrom-logo);
+    z-index: 3;
+    /* Borda direita da primeira célula do cabeçalho */
+    border-right: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* =============================== */
+/* STATUS (CORES)                  */
+/* =============================== */
+
+.status-P { color: #28a745; font-weight: bold; }
+.status-F { color: #dc3545; font-weight: bold; }
+.status-FJ { color: #007bff; font-weight: bold; }
+
+/* =============================== */
+/* MODAL (FIXED CENTERED)          */
+/* =============================== */
+
+dialog {
+    border: none;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    background-color: white;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6); /* Um pouco mais escuro para destaque */
+    backdrop-filter: blur(2px);
+}
+
+/* Animação suave */
+dialog[open] {
+    animation: fadeInModal 0.3s ease-out;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; transform: translate(-50%, -45%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* --- AQUI ESTÁ A MÁGICA DA CENTRALIZAÇÃO --- */
+#modalEscolhaTurma[open] {
+    position: fixed; /* Fixa na tela, ignora o scroll */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centraliza perfeitamente */
+    margin: 0;
+    z-index: 9999; /* Garante que fique acima da tabela */
+}
+
+.modal-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.modal-content h3 {
+    color: var(--marrom-logo);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.modal-content select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 25px;
+    outline: none;
+}
+
+.modal-content select:focus {
+    border-color: var(--marrom-logo);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn-confirm {
+    flex: 1;
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-confirm:hover {
+    background-color: #7a4e27;
+}
+
+.btn-cancel {
+    flex: 1;
+    background-color: #eee;
+    color: #555;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #ddd;
+}
+
+/* =============================== */
+/* RESPONSIVIDADE                  */
+/* =============================== */
+
+@media (max-width: 600px) {
+    .container-principal h1 {
+        font-size: 24px;
+        padding: 0 10px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        text-align: center;
+    }
+    
+    .grid-container {
+        width: 85%; 
+        gap: 15px;
+    }
+
+    .table-container {
+        width: 95%;
+    }
+
+    thead th, tbody td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+}

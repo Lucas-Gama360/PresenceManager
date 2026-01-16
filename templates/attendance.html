@@ -9,6 +9,10 @@
       href="{{url_for('static', filename='css/stylehomepage.css')}}"
     />
     <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styleattendance.css')}}"
+    />
+    <link
       rel="shortcut icon"
       href="{{url_for('static', filename='images/faviconcrisma.ico')}}"
       type="image/x-icon"
@@ -38,7 +42,8 @@
             <form action="{{url_for('save_attendance')}}" method="post">
                 <table>
                   <tr>
-                    <th>CHAMADA {{turmaselect.turma_name}}</th>
+                    <!--O colspan é pra ocupar 2 colunas-->
+                    <th colspan="2">CHAMADA {{turmaselect.turma_name}}</th>
                   </tr>
                   {%for crismando in crismandos%}
                   <tr>

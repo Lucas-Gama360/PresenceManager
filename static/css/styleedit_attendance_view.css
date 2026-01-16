@@ -1,0 +1,415 @@
+/* ============================================================ */
+/* STYLEEDITATTENDANCE.CSS - LIMPO E LARGO                      */
+/* ============================================================ */
+
+:root {
+    --marrom-logo: #9B6230;
+    --marrom-escuro: #7a4e27;
+    --cinza-claro: #f4f4f4;
+    --texto: #333;
+    --borda: #ddd;
+}
+
+body {
+    background-color: #fcfcfc;
+}
+
+/* =============================== */
+/* CONTAINER GLOBAL                */
+/* =============================== */
+
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; /* Largura máxima da página */
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 80px;
+}
+
+.container-principal h1 {
+    text-align: center;
+    font-size: 32px;
+    color: var(--marrom-logo);
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+/* Títulos de seção (Visão Geral) */
+.section-title {
+    font-size: 22px;
+    color: var(--texto);
+    margin: 40px 0 20px 0;
+    font-weight: 500;
+    border-bottom: 3px solid var(--marrom-logo);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+/* =============================== */
+/* PÁGINA: EDITAR CHAMADA (VIEW)   */
+/* =============================== */
+
+/* Wrapper do formulário - AGORA LARGO */
+form[action*="save_attendance"] {
+    width: 100%;
+    /* Removi o max-width: 700px antigo. Agora ele preenche o container principal */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 1. Info Chamada (SEM CAIXOTE) */
+.info-chamada {
+    background: transparent; /* Fundo transparente */
+    width: 100%;
+    padding: 0 0 30px 0; /* Apenas espaçamento inferior */
+    border: none; /* Sem bordas */
+    box-shadow: none; /* Sem sombra */
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.info-chamada p {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 5px 0;
+    display: inline-block; /* Fica na mesma linha em telas grandes se quiser, ou bloco */
+    margin-right: 20px;
+}
+
+/* Quebra linha no mobile, mantém espaçado no PC */
+@media (max-width: 600px) {
+    .info-chamada p { display: block; margin-right: 0; margin-bottom: 5px; }
+}
+
+.info-chamada strong {
+    color: var(--marrom-logo);
+    font-weight: 600;
+}
+
+/* 2. Tabela de Edição */
+form .table-container {
+    width: 100%; /* Ocupa toda a largura disponível */
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border: 1px solid var(--borda);
+}
+
+form table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+form thead th {
+    background-color: var(--marrom-logo);
+    color: white;
+    padding: 15px;
+    font-weight: 500; /* Cabeçalho mais leve também */
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Ajuste das Colunas: Nome (70%) e Presença (30%) */
+form table th:first-child, 
+form table td:first-child {
+    text-align: left;
+    padding-left: 30px;
+    width: 70%; 
+}
+
+form table th:last-child, 
+form table td:last-child {
+    width: 30%;
+    padding: 10px 30px 10px 10px;
+}
+
+form tbody td {
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* ESTILO DOS SELECTS */
+form select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    color: #444;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239B6230%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 10px auto;
+}
+
+form select:focus {
+    border-color: var(--marrom-logo);
+    box-shadow: 0 0 0 2px rgba(155, 98, 48, 0.1);
+    outline: none;
+}
+
+/* Botões de Ação */
+.actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha botões à direita (opcional, ou center) */
+    gap: 15px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.btn-confirm {
+    flex: 1;
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.btn-confirm:hover {
+    background-color: var(--marrom-escuro);
+}
+
+.btn-cancel {
+    flex: 0 0 150px; /* Largura fixa menor para o botão voltar */
+    background-color: transparent;
+    color: #777;
+    border: 1px solid #ccc;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+
+/* =============================== */
+/* PÁGINA: HISTÓRICO (GRID)        */
+/* =============================== */
+/* Mantive igual, apenas ajustando pesos de fonte */
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.grid-item {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-top: 5px solid var(--marrom-logo);
+    transition: transform 0.2s;
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+}
+
+.grid-item h3 {
+    color: var(--marrom-logo);
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.grid-item p {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.btn-edit {
+    background-color: var(--marrom-logo);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.btn-edit:hover {
+    background-color: var(--marrom-escuro);
+}
+
+
+/* =============================== */
+/* TABELA DE VISÃO GERAL (GRANDE)  */
+/* =============================== */
+
+div:not(form) > .table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+div:not(form) > .table-container table {
+    width: 100%;
+    min-width: 800px; 
+    border-collapse: collapse;
+}
+
+div:not(form) > .table-container th {
+    background-color: var(--marrom-logo);
+    color: white;
+    padding: 12px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    font-weight: 500;
+}
+
+div:not(form) > .table-container td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+div:not(form) > .table-container th:first-child,
+div:not(form) > .table-container td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 2;
+    border-right: 2px solid #ddd;
+    text-align: left;
+    min-width: 150px;
+    padding-left: 15px;
+}
+
+div:not(form) > .table-container th:first-child {
+    background-color: var(--marrom-logo);
+    z-index: 3;
+}
+
+
+/* =============================== */
+/* MODAL                           */
+/* =============================== */
+
+dialog {
+    border: none;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    background-color: white;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+dialog[open] {
+    animation: zoomIn 0.3s ease-out;
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: translate(-50%, -45%) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+#modalEscolhaTurma[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    z-index: 10000;
+}
+
+.modal-content {
+    padding: 30px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    color: var(--marrom-logo);
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.modal-content select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 20px 0;
+    font-size: 1rem;
+    background-image: none; /* Remove seta customizada no modal */
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Status Colors */
+.status-P { color: #28a745; font-weight: 700; }
+.status-F { color: #dc3545; font-weight: 700; }
+.status-FJ { color: #007bff; font-weight: 700; }
+
+/* Mobile */
+@media (max-width: 600px) {
+    .container-principal { padding: 15px; }
+    
+    .actions { flex-direction: column; }
+    
+    .btn-cancel { flex: 1; }
+    
+    form table th:first-child, form table td:first-child {
+        width: 50%; padding-left: 10px;
+    }
+    form table th:last-child, form table td:last-child {
+        width: 50%; padding-right: 10px;
+    }
+}

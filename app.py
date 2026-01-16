@@ -166,11 +166,6 @@ def delete_turma(turma_id , nome):
         return render_template('index.html')
     with get_conn() as conn:
         cur = conn.cursor()
-            
-        # 1. Verificar se há crismandos vinculados
-        # cur.execute("SELECT COUNT(*) FROM crismandos WHERE turma_id = ?", (turma_id,))
-        # if cur.fetchone()[0] > 0:
-            # return redirect(url_for('list_turmas', msg='Erro: Não é possível excluir a turma. Existem crismandos vinculados a ela.'))
                 
         # 2. Excluir a turma
         cur.execute("DELETE FROM turmas WHERE id = ?", (turma_id,))
@@ -376,9 +371,8 @@ def delete_meeting():
         return redirect(url_for('list_meetings', msg = 'Encontro deletado com sucesso!'))
     
 #========================================
-# ROTAS REALIZAÇÃO DE CHAMADAS
+# ROTAS REALIZAÇÃO E EDIÇÃO DE CHAMADAS
 #========================================
-#'/deleteturma/<int:turma_id>/<nome>'
 @app.post("/requirementsattendance")
 def requirements_attendance():
     if 'loged_user' not in session:
@@ -441,7 +435,88 @@ def save_attendance():
         
         conn.commit()
     
-    return redirect(url_for('home_page', msg="Chamada realizada com sucesso!"))
+    return redirect(url_for('home_page'))
+
+@app.get('/editattendance')
+def edit_attendance():
+    """Página com o grid de encontros e a tabela de resumo dos últimos 10 encontros"""
+    if 'loged_user' not in session:
+        return render_template('index.html')
+    
+    with get_conn() as conn:
+        cur = conn.cursor()
+        
+        # 1. Buscar todos os encontros para o Grid (do mais novo para o mais antigo)
+        cur.execute("SELECT id, tema, meeting_date FROM meetings ORDER BY meeting_date DESC")
+        encontros = cur.fetchall()
+        
+        # 2. Buscar todas as turmas para o Modal de seleção
+        cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
+        turmas = cur.fetchall()
+        
+        # 3. Buscar os últimos 10 encontros para a Tabela de Resumo
+        cur.execute("SELECT id, meeting_date FROM meetings ORDER BY meeting_date DESC LIMIT 10")
+        encontros_tabela = cur.fetchall()
+        encontros_tabela = encontros_tabela[::-1] # Inverte para o mais novo ficar na direita
+        
+        # 4. Buscar todos os crismandos para a primeira coluna da tabela
+        cur.execute("SELECT id, name FROM crismandos ORDER BY name")
+        crismandos = cur.fetchall()
+        
+        # 5. Criar um mapa de presenças (Dicionário)
+        # Isso evita fazer centenas de consultas ao banco dentro do HTML
+        presencas_map = {}
+        if encontros_tabela:
+            meeting_ids = [str(e['id']) for e in encontros_tabela]
+            placeholders = ','.join(['?'] * len(meeting_ids))
+            query = f"SELECT crismando_id, meeting_id, status FROM attendance WHERE meeting_id IN ({placeholders})"
+            cur.execute(query, [int(i) for i in meeting_ids])
+            presencas = cur.fetchall()
+            
+            for p in presencas:
+                # Criamos uma chave única: "IDdoAluno_IDdoEncontro"
+                key = f"{p['crismando_id']}_{p['meeting_id']}"
+                presencas_map[key] = p['status']
+
+    return render_template('editattendance.html', 
+                           encontros=encontros, 
+                           turmas=turmas, 
+                           encontros_tabela=encontros_tabela, 
+                           crismandos=crismandos, 
+                           presencas_map=presencas_map)
+
+@app.get('/editattendanceview')
+def edit_attendance_view():
+    """Página que abre a lista de alunos de uma turma específica para editar"""
+    if 'loged_user' not in session:
+        return render_template('index.html')
+    
+    encontro_id = request.args.get('encontro_id')
+    turma_id = request.args.get('turma_id')
+    
+    with get_conn() as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT id, tema, meeting_date FROM meetings WHERE id = ?", (encontro_id,))
+        encontro = cur.fetchone()
+        
+        cur.execute("SELECT id, turma_name FROM turmas WHERE id = ?", (turma_id,))
+        turma = cur.fetchone()
+        
+        # O LEFT JOIN busca o aluno mesmo que ele ainda não tenha presença marcada
+        cur.execute("""
+            SELECT c.id, c.name, a.status 
+            FROM crismandos c
+            LEFT JOIN attendance a ON c.id = a.crismando_id AND a.meeting_id = ?
+            WHERE c.turma_id = ?
+            ORDER BY c.name
+        """, (encontro_id, turma_id))
+        lista_presenca = cur.fetchall()
+
+    return render_template('edit_attendance_view.html', 
+                           encontro=encontro, 
+                           turma=turma, 
+                           lista_presenca=lista_presenca)
+
 
 #====================================
 # FUNÇÃO LOGOUT
@@ -454,5 +529,5 @@ def logout_user():
 
 
     
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)

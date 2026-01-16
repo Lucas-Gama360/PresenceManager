@@ -84,31 +84,37 @@
     background: var(--marrom-logo);
     color: white;
 }
-
+/* 1. Adiciona a linha no cabeçalho */
 .tabela-crismandos thead th {
     padding: 14px;
-    font-size: 16px; /* Diminuído um pouco */
+    font-size: 16px;
     font-weight: 600;
     white-space: nowrap;
-    text-align: center; /* Centralizado */
+    text-align: center;
+    /* Linha vertical à direita, exceto na última coluna */
+    border-right: 1px solid rgba(255, 255, 255, 0.2); 
 }
 
-/* CORPO DA TABELA */
+/* 2. Adiciona a linha no corpo da tabela */
 .tabela-crismandos tbody td {
     padding: 12px;
-    font-size: 15px; /* Diminuído um pouco */
+    font-size: 15px;
     border-bottom: 1px solid #ddd;
-    text-align: center; /* Centralizado */
+    text-align: center;
+    /* Linha vertical cinza bem clara */
+    border-right: 1px solid #eeeeee; 
+    background-color: white; /* Garante o fundo branco em todas */
+}
+
+/* 3. Remove a linha vertical da última coluna (Ações) para o visual ficar limpo */
+.tabela-crismandos th:last-child, 
+.tabela-crismandos td:last-child {
+    border-right: none;
 }
 
 /* última linha */
 .tabela-crismandos tbody tr:last-child td {
     border-bottom: none;
-}
-
-/* alternância de cores */
-.tabela-crismandos tbody tr:nth-child(even) {
-    background: #f7f7f7;
 }
 
 /* linha "não existem crismandos..." */

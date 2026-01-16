@@ -104,3 +104,13 @@ function CloseModalDeleteCrismando(){
     const modal = document.getElementById('deletecrismandoconfirmation')
     modal.close()   
 }
+function openEditModal(id, tema) {
+    const modal = document.getElementById('modalEscolhaTurma');
+    const modalIdInput = document.getElementById('modalEncontroId');
+    modalIdInput.value = id;
+    modal.showModal();
+}
+function closeEditModal() {
+    const modal = document.getElementById('modalEscolhaTurma');
+    modal.close();
+}
