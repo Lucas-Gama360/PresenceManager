@@ -114,3 +114,11 @@ function closeEditModal() {
     const modal = document.getElementById('modalEscolhaTurma');
     modal.close();
 }
+ function OpenModalconfirmationreset(){
+    const modal = document.getElementById('deletesystem');
+    modal.showModal();
+}
+ function CloseModalconfirmationreset(){
+    const modal = document.getElementById('deletesystem');
+    modal.close();
+}

@@ -34,6 +34,9 @@
     </header>
     <div class="container-principal">
     <h1>Configurações</h1>
+    {% if request.args.get('msg') %}
+      <div class="mensagem" role="alert">{{ request.args.get('msg') }}</div>
+    {% endif %}
       <main class="dashboard">
         <section class="cards-grid">
           <!-- Card 1: Chamada Presença (todos veem) -->
@@ -56,8 +59,24 @@
             <p>Crie Encontros e visualize todos os já criados</p>
             <a href="{{ url_for('list_meetings')}}" class="btn">Acessar</a>
           </article>
-        </section>
-      </main>
 
+          <article class="card">
+            <h2>Resetar Sistema</h2>
+            <p>Resete todo o sistema para inicar nova caminhada!</p>
+            <button onclick="OpenModalconfirmationreset()" class="btn">Acessar</button>
+          </article>
+        </section>
+
+        <dialog id="deletesystem">
+        <form action="{{url_for('reset_database')}}" method="post">
+        <p>OBS: Esta ação é irrreversivel</p>
+        <p id="menor">Se sim digite a senha mestre:</p>
+        <input type="password" name="senhamestre">
+        <button type="submit">SIM</button>
+        <button type="button" id="btnn" onclick="CloseModalconfirmationreset()">Cancelar</button>
+        </form>
+    </dialog>
+      </main>
+    <script src="{{url_for('static', filename='scripts/script.js')}}"></script>
 </body>
 </html>

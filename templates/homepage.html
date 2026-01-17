@@ -45,20 +45,23 @@
             <button class="btn" onclick="Openmodalchamada()">Acessar</button>
           </article>
 
-          <!-- Card 2: Lista de Crismandos (todos veem) -->
           <article class="card">
-            <h2>Lista de Crismandos</h2>
-            <p>Visualize, edite e gerencie os dados dos participantes.</p>
-            <a href="" class="btn">Acessar</a>
-          </article>
-
-          <!-- Card 3: Relatórios (todos veem) -->
-          <article class="card">
-            <h2>Edite a chamadas passadas</h2>
-            <p>Modifique chamadas passadas.</p>
+            <h2>Edites a chamadas passadas</h2>
+            <p>Modifique e visualize chamadas passadas.</p>
             <a href="{{url_for('edit_attendance')}}" class="btn">Acessar</a>
           </article>
 
+          <article class="card">
+            <h2>Frequência dos crismandos</h2>
+            <p>VIsualize o percentual de frequência dos crismandos nos ultimos 3 encontros.</p>
+            <a href="{{url_for('frequency_report')}}" class="btn">Acessar</a>
+          </article>
+
+          <article class="card">
+            <h2>Turmas</h2>
+            <p>Visualize como estão as turmas e Quais crismandos Estão nelas.</p>
+            <a href="{{ url_for('view_turmas')}}" class="btn">Acessar</a>
+          </article>
           
           <!-- Usando JINJA a partir daqui é renderizada a parte do admin -->
           {% if session.get('admin') == 1 %}

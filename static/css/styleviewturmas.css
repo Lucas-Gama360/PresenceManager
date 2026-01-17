@@ -1,0 +1,143 @@
+/* ============================================================ */
+/* STYLEVIEWTURMAS.CSS - LISTA COM LINHAS (GRID)                */
+/* ============================================================ */
+
+:root {
+    --marrom-principal: #9B6230;
+    --marrom-escuro: #7a4e27;
+    --fundo-pagina: #f4f7f6;
+    --branco: #ffffff;
+    --texto: #333;
+    --linha-borda: #dee2e6; /* Cor cinza suave para as grades */
+}
+
+body {
+    background-color: var(--fundo-pagina);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    color: var(--texto);
+}
+
+/* =============================== */
+/* LAYOUT GRID (DASHBOARD)         */
+/* =============================== */
+
+#container-principal {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    
+    /* Organiza as tabelas lado a lado se houver espaço */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    align-items: start;
+}
+
+/* Mensagem de "Nenhuma turma" */
+#container-principal > p {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #888;
+    margin-top: 50px;
+}
+
+/* =============================== */
+/* TABELA GRADEADA (COM BORDAS)    */
+/* =============================== */
+
+.tabela-turmas {
+    width: 100%;
+    border-collapse: collapse; /* Essencial para as linhas se tocarem */
+    background: var(--branco);
+    border-radius: 8px; /* Cantos levemente arredondados fora */
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    
+    /* Borda externa completa */
+    border: 1px solid var(--linha-borda); 
+}
+
+/* --- Cabeçalho --- */
+.tabela-turmas thead {
+    background-color: var(--marrom-principal);
+}
+
+.tabela-turmas th {
+    padding: 15px;
+    color: var(--branco);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--marrom-escuro);
+}
+
+/* --- Células (Linhas Horizontais e Verticais) --- */
+.tabela-turmas td {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--linha-borda); /* Linha Horizontal */
+    border-right: 1px solid var(--linha-borda);  /* Linha Vertical */
+    color: #444;
+    font-size: 0.95rem;
+}
+
+/* Remove a linha vertical da última coluna (Direita) */
+.tabela-turmas td:last-child {
+    border-right: none;
+}
+
+/* Remove a linha horizontal da última linha (Fundo) */
+.tabela-turmas tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- Estilo da Coluna de Números (1ª Coluna) --- */
+.tabela-turmas td:first-child {
+    width: 50px; /* Largura fixa pequena */
+    text-align: center;
+    background-color: #f9f9f9; /* Fundo levemente diferente */
+    font-weight: 600;
+    color: var(--marrom-principal);
+}
+
+/* --- Estilo da Coluna de Nomes (2ª Coluna) --- */
+.tabela-turmas td:nth-child(2) {
+    text-align: left;
+}
+
+/* Efeito Zebrado (Linhas alternadas ficam cinza claro) */
+.tabela-turmas tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Efeito Hover na Linha */
+.tabela-turmas tbody tr:hover {
+    background-color: #fff3e0; /* Amarelo/Marrom muito claro ao passar mouse */
+}
+
+.tabela-turmas tbody tr:hover td:first-child {
+    background-color: #ffe0b2; /* Destaca o número no hover */
+}
+
+/* =============================== */
+/* RESPONSIVIDADE                  */
+/* =============================== */
+
+@media (max-width: 600px) {
+    #container-principal {
+        grid-template-columns: 1fr; /* Uma coluna no mobile */
+        padding: 15px;
+    }
+
+    .tabela-turmas th {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    .tabela-turmas td {
+        padding: 10px;
+    }
+}

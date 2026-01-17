@@ -29,7 +29,7 @@
             <p><strong>Turma:</strong> {{ turma.turma_name }}</p>
         </div>
 
-        <form action="{{ url_for('save_attendance') }}" method="post">
+        <form action="{{ url_for('save_attendance_edit') }}" method="post">
             <input type="hidden" name="meeting_id" value="{{ encontro.id }}">
             <div class="table-container">
                 <table>

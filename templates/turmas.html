@@ -57,24 +57,29 @@
 {% for turma in turmas %}
     <table class="tabela-turmas">
         <thead>
-                <th>{{turma.turma_name}}</th>
-                <th>
-                        <button type="button" onclick="OpenModalConfirmation()" id="openmodalconfirmation">EXCLUIR</button>
-                        <dialog id="modalconfirmation">
-                          <form action="{{ url_for('delete_turma', turma_id = turma.id , nome=turma.turma_name) }}" method="post">
-                            <p> OBS: Esta ação é irreversível</p>
-                            <button type="submit">SIM</button>
-                            <button type="button" onclick="CloseModalConfirmation()">NÃO</button>
-                          </form>
-                        </dialog>
-                </th>
-            </tr>
-        </thead>
+<thead>
+        <tr> <th>{{turma.turma_name}}</th>
+            <th>
+                <button type="button" onclick="OpenModalConfirmation()" id="openmodalconfirmation">EXCLUIR</button>
+                <dialog id="modalconfirmation">
+                    <form action="{{ url_for('delete_turma', turma_id = turma.id , nome=turma.turma_name) }}" method="post">
+                        <p> OBS: Esta ação é irreversível</p>
+                        <button type="submit">SIM</button>
+                        <button type="button" onclick="CloseModalConfirmation()">NÃO</button>                            
+                    </form>
+                </dialog>
+            </th>
+        </tr> 
+      </thead>
         <tbody>
+          {% set counter = [0] %}
             {%for crismando in crismandos | sort(attribute='name')%}
                  {% if crismando.turma_id == turma.id %}
+                    {% set _ = counter.append(counter.pop() + 1) %}
                  <tr>
-                     <td>{{crismando.name}}</td> <td></td> </tr>
+                    <td>{{counter[0]}}</td>
+                     <td>{{crismando.name}}</td> 
+                  </tr>
                  {%endif%}
              {%endfor%}
         </tbody>

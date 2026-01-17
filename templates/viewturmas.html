@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Crismandos</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styleconfigadmin.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styleviewturmas.css')}}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static', filename='images/faviconcrisma.ico')}}"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <div class="header-left">
+        <img
+          src="{{url_for('static', filename='images/logocrismamaior.png')}}"
+          alt="Logo da crisma"
+          class="logo"
+        />
+        <h1 class="title-center" onclick="window.location.href='/homepage'">
+          Chamada da Crisma
+        </h1>
+      </div>
+      <form action="{{url_for('logout_user')}}" method="post">
+        <button class="button-logout">Sair</button>
+      </form>
+    </header>
+<main>
+<div id="container-principal">
+                {% if turmas %}
+{% for turma in turmas %}
+    <table class="tabela-turmas">
+        <thead>
+          <tr>
+                <th colspan="2">{{turma.turma_name}}</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% set counter = [0] %}
+            {%for crismando in crismandos | sort(attribute='name')%}
+                 {% if crismando.turma_id == turma.id %}
+                    {% set _ = counter.append(counter.pop() + 1) %}
+                 <tr>
+                    <td>{{counter[0]}}</td>
+                     <td>{{crismando.name}}</td> 
+                  </tr>
+                 {%endif%}
+             {%endfor%}
+        </tbody>
+    </table>
+{% endfor %}
+            {% else %}
+                <p>Nenhuma turma cadastrada ainda.</p>
+            {% endif %}
+</div>
+</main>
+<script src="{{url_for('static', filename='scripts/script.js')}}"></script>
+  </body>
+</html>

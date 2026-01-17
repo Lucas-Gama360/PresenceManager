@@ -1,0 +1,160 @@
+/* ============================================================ */
+/* STYLEFREQUENCY.CSS - RELATÓRIO DE FREQUÊNCIA                 */
+/* ============================================================ */
+
+:root {
+    --marrom-principal: #9B6230;
+    --marrom-escuro: #7a4e27;
+    --fundo-pagina: #fcfcfc;
+    --branco: #ffffff;
+    --texto: #333;
+    --vermelho-alerta: #dc3545; /* Vermelho para baixa frequência */
+    --vermelho-fundo: #fff5f5;  /* Fundo suave para o alerta */
+    --borda: #dee2e6;
+}
+
+body {
+    background-color: var(--fundo-pagina);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    color: var(--texto);
+}
+
+/* =============================== */
+/* CONTAINER PRINCIPAL             */
+/* =============================== */
+
+.container-principal {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título */
+.container-principal h1 {
+    font-size: 28px;
+    color: var(--marrom-principal);
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Texto explicativo */
+.container-principal p {
+    color: #666;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 0.95rem;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+/* Destaque no texto explicativo */
+.container-principal p strong {
+    color: var(--vermelho-alerta);
+}
+
+/* =============================== */
+/* TABELA DE FREQUÊNCIA            */
+/* =============================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--branco);
+    border-radius: 12px; /* Cantos arredondados */
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--borda);
+}
+
+/* --- Cabeçalho --- */
+thead {
+    background-color: var(--marrom-principal);
+}
+
+/* Importante: Sobrescreve estilo inline se houver no HTML */
+thead tr {
+    background-color: transparent !important; 
+}
+
+th {
+    padding: 16px 20px;
+    color: var(--branco);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    text-align: left;
+    letter-spacing: 0.5px;
+    border-bottom: 3px solid rgba(0,0,0,0.1);
+}
+
+/* Alinha a coluna de porcentagem à direita ou centro */
+th:last-child {
+    text-align: center;
+    width: 150px;
+}
+
+/* --- Corpo da Tabela --- */
+td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--borda);
+    color: #444;
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+td:last-child {
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Remove borda da última linha */
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Efeito Hover nas linhas */
+tbody tr:hover {
+    background-color: #fff9f5; /* Amarelo/Marrom bem suave */
+}
+
+/* =============================== */
+/* INDICATIVO DE BAIXA FREQUÊNCIA  */
+/* =============================== */
+
+/* Aplica estilo na célula que tiver essa classe */
+td.baixa-frequencia {
+    color: var(--vermelho-alerta) !important;
+    font-weight: 700;
+    background-color: var(--vermelho-fundo); /* Fundo avermelhado suave */
+    border-bottom: 1px solid #ffcccc; /* Linha divisória avermelhada */
+}
+
+/* Se a linha inteira tiver baixa frequência, arredonda cantos visuais */
+tr:hover td.baixa-frequencia {
+    background-color: #ffe0e0; /* Escurece um pouco no hover */
+}
+
+/* =============================== */
+/* RESPONSIVIDADE                  */
+/* =============================== */
+
+@media (max-width: 600px) {
+    .container-principal {
+        padding: 20px 15px;
+    }
+
+    .container-principal h1 {
+        font-size: 22px;
+    }
+
+    th, td {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+}

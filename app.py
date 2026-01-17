@@ -74,7 +74,6 @@ def home_page():
         conn.commit()
     return render_template('homepage.html', encontros=encontros, turmas=turmas)
     
-    return render_template('homepage.html')
 @app.get('/configpage')
 def config_page():
     """Página de configurações(admin)"""
@@ -203,7 +202,23 @@ def create_turma():
     # captura qualquer erro inesperado
     except Exception as e:
         return redirect(url_for('list_turmas',msg=f'Erro inesperado: {str(e)}'))
-
+    
+#====================================
+# ROTA VISUALIZAÇÃO DE TURMA USUÁRIOS
+#==================================== 
+@app.get("/viewturmas")
+def view_turmas():
+    if 'loged_user' not in session :
+        return render_template('index.html')
+    with get_conn() as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT id, turma_name FROM turmas ORDER BY turma_name")
+        turmas = cur.fetchall()
+        cur.execute("SELECT id, name, turma_id FROM crismandos ORDER BY name")
+        crismandos = cur.fetchall()
+    
+    return render_template('viewturmas.html', turmas=turmas, crismandos = crismandos)
+ 
 #====================================
 # ROTAS EDIÇÃO DE CRISMANDOS
 #====================================       
@@ -437,6 +452,41 @@ def save_attendance():
     
     return redirect(url_for('home_page'))
 
+@app.post("/saveattendanceedit")
+def save_attendance_edit():
+    if 'loged_user' not in session:
+        return render_template("index.html")
+    # 1. O seu HTML tem: <input type="hidden" name="meeting_id" value="{{ encontroselect.id }}">
+    # Então aqui buscamos pelo nome 'meeting_id'
+    meeting_id = request.form.get('meeting_id')
+    
+    with get_conn() as conn:
+        cur = conn.cursor()
+        
+        # 2. Vamos varrer todos os campos que o formulário enviou
+        for key, value in request.form.items():
+            
+            # 3. No seu HTML, o select tem: name="status_{{aluno.id}}"
+            # Se o aluno tem ID 7, o nome do campo chega como "status_7"
+            if key.startswith('status_'):
+                
+                # 4. Tiramos o "status_" para sobrar só o número do ID do aluno
+                crismando_id = key.replace('status_', '')
+                
+                # 5. O valor (value) será 0 (Presente), 1 (Falta) ou 2 (Justificado)
+                status = int(value)
+                
+                # 6. AGORA A INTERAÇÃO COM O BANCO:
+                # Inserimos na tabela 'attendance' que você criou no create_db.py
+                cur.execute("""
+                    INSERT OR REPLACE INTO attendance (crismando_id, meeting_id, status)
+                    VALUES (?, ?, ?)
+                """, (crismando_id, meeting_id, status))
+        
+        conn.commit()
+    
+    return redirect(url_for('edit_attendance'))
+
 @app.get('/editattendance')
 def edit_attendance():
     """Página com o grid de encontros e a tabela de resumo dos últimos 10 encontros"""
@@ -517,6 +567,89 @@ def edit_attendance_view():
                            turma=turma, 
                            lista_presenca=lista_presenca)
 
+#====================================
+# ROTA FREQUÊNCIA (ÚLTIMOS 3 ENCONTROS)
+#====================================
+@app.get("/frequency")
+def frequency_report():
+    """Calcula a frequência dos crismandos de forma ultra simples"""
+    # 1. Segurança: Só entra se estiver logado
+    if 'loged_user' not in session:
+        return render_template('index.html')
+    
+    # 2. Conecta ao banco de dados
+    conn = get_conn()
+    cur = conn.cursor()
+    
+    # 3. Busca os IDs dos 3 encontros mais recentes pela data
+    cur.execute("SELECT id FROM meetings ORDER BY meeting_date DESC LIMIT 5")
+    encontros = cur.fetchall()
+    lista_ids = [e['id'] for e in encontros]
+    total_encontros = len(lista_ids)
+    
+    # 4. Busca todos os crismandos (apenas o básico: id e nome)
+    cur.execute("SELECT id, name FROM crismandos")
+    todos_crismandos = cur.fetchall()
+    
+    relatorio = []
+    
+    # 5. Para cada aluno, vamos contar as presenças
+    for aluno in todos_crismandos:
+        presencas = 0
+        for id_encontro in lista_ids:
+            # Verifica na tabela 'attendance' se o aluno tem status 0 (presente)
+            cur.execute("SELECT status FROM attendance WHERE crismando_id = ? AND meeting_id = ?", 
+                        (aluno['id'], id_encontro))
+            resultado = cur.fetchone()
+            
+            # Se encontrou o registro e o status for 0, soma 1 presença
+            if resultado and resultado['status'] == 0:
+                presencas += 1
+        
+        # 6. Calcula a porcentagem (Presenças divididas pelo Total de Encontros)
+        if total_encontros > 0:
+            porcentagem = (presencas / total_encontros) * 100
+        else:
+            porcentagem = 0
+            
+        # Adiciona os dados simplificados na lista que vai para o HTML
+        relatorio.append({
+            'nome': aluno['name'],
+            'percentual': int(porcentagem) # int() remove as casas decimais
+        })
+    
+    # 7. Fecha a conexão e envia os dados para a página
+    conn.close()
+    return render_template('frequency.html', report=relatorio)
+
+#====================================
+# ROTA RESET DB
+#====================================
+@app.post("/reset_database")
+def reset_database():
+    
+    if not 'admin' in session:
+        return render_template('index.html')
+    
+    passwordmaster = request.form.get('senhamestre', '').strip()
+    if passwordmaster == MASTER_PASSWORD:
+        with get_conn() as conn:
+            cur = conn.cursor()
+        
+            # 2. Apagamos os dados das tabelas na ordem correta (por causa das chaves estrangeiras)
+            # Primeiro as presenças, depois crismandos, depois turmas e encontros
+            cur.execute("DELETE FROM attendance")
+            cur.execute("DELETE FROM crismandos")
+            cur.execute("DELETE FROM turmas")
+            cur.execute("DELETE FROM meetings")
+            cur.execute("DELETE FROM sqlite_sequence WHERE name IN ('attendance', 'crismandos', 'turmas', 'meetings')")
+        
+            conn.commit()
+    
+        # 4. Redireciona de volta para a página de configurações com uma mensagem
+        return redirect(url_for('config_page', msg="Banco de dados resetado com sucesso! (Usuários mantidos)"))
+    else:
+        return redirect(url_for('config_page', msg="Senha Mestre errada, o sistema não foi resetado.")) 
 
 #====================================
 # FUNÇÃO LOGOUT
