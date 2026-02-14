@@ -82,7 +82,7 @@ def config_page():
     else:
         return render_template('configpage.html')
 #====================================
-# ROTA NOVOS USUÁRIOS
+# ROTA NOVOS USUÁRIOSe
 #====================================
 @app.post('/register_user')
 def register_user():
