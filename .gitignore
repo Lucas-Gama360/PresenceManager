@@ -32,3 +32,9 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+credentials.json
+.env
+__pycache__/
+*.pyc
+data/*.db

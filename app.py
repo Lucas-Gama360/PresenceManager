@@ -6,7 +6,15 @@ import secrets #pra poder gerar secret key aleatoria, segura(módulo nativo do p
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
+import threading  # para rodar em segundo plano
 
+
+try:
+    from update_dasboard import atualizar_dashboard
+except ImportError:
+    print(" Módulo update_dasboard não encontrado. Dashboard não será atualizado.")
+    def atualizar_dashboard():
+        pass
 # =========================
 # LOCALIZAÇÃO DO PROJETO
 # =========================
@@ -17,6 +25,19 @@ DB_PATH = BASE_DIR / "data" / "dataBase.db"
 # carrega o .env EXPLICITAMENTE (mesmo padrão do create_db.py)
 # Isso permite usar configurações como SECRET_KEY, DATABASE_URL, etc. sem precisar definir manualmente no terminal
 load_dotenv(ENV_PATH, override=True)
+
+# função pra atualizar a planilha digital de chamada
+def atualizar_dashboard_async():
+    """
+    Atualiza o dashboard em uma thread separada.
+    Assim o usuário não fica esperando o Google Sheets responder.
+    """
+    try:
+        thread = threading.Thread(target=atualizar_dashboard)
+        thread.daemon = True  # Thread morre quando o app principal morre
+        thread.start()
+    except Exception as e:
+        print(f"Erro ao iniciar atualização do dashboard: {e}")
 
 # =========================
 # CONEXÃO COM O BANCO 
@@ -173,7 +194,7 @@ def delete_turma(turma_id , nome):
         # 2. Excluir os crismandos da turmas
         cur.execute("DELETE FROM crismandos WHERE turma_id = ?", (turma_id,))
         conn.commit()
-            
+        atualizar_dashboard_async()
         return redirect(url_for('list_turmas', msg=f'{nome} excluida com sucesso!'))
 
 @app.post("/creaturma")
@@ -195,6 +216,7 @@ def create_turma():
             cur = conn.cursor()
             cur.execute("INSERT INTO turmas (turma_name) VALUES (?)", (turmaname,))
             conn.commit()
+            atualizar_dashboard_async()
             return redirect(url_for('list_turmas', msg=f'"{turmaname}" criada com sucesso!'))
     # Se cair aqui, o nome já existe (violação do UNIQUE)
     except sqlite3.IntegrityError:
@@ -254,6 +276,7 @@ def add_crismandos():
             cur.execute("INSERT INTO crismandos (name, turma_id) VALUES (?, ?)", (namecrismando, turma_id))
             nome = cur.fetchall()
             conn.commit()
+            atualizar_dashboard_async()
         return redirect(url_for('list_crismandos', msg='Crismando adicionado com sucesso!'))
     # violação do UNIQUE, ou seja, o crismando já está cadastrado
     except sqlite3.IntegrityError:
@@ -269,7 +292,7 @@ def delete_crismandos(crismando_id):
             cur.execute("DELETE FROM crismandos WHERE id = ?", (crismando_id,))
             cur.execute("DELETE FROM attendance WHERE crismando_id = ?", (crismando_id,))
             conn.commit()
-            
+            atualizar_dashboard_async()
         return redirect(url_for('list_crismandos', msg='Crismando retirado com sucesso!')) 
 
 @app.post("/switchturma")
@@ -286,6 +309,7 @@ def switch_turma():
             cur.execute("UPDATE crismandos SET turma_id = ? WHERE id = ?", (nova_turma, crismando_id))
 
             conn.commit()
+            atualizar_dashboard_async()
         return redirect(url_for('list_crismandos', msg='Troca de turma efetuada com sucesso!')) 
 
 @app.post('/randomcrismandos')
@@ -328,6 +352,7 @@ def random_crismandos():
 
             
             conn.commit()
+            atualizar_dashboard_async()
             return redirect(url_for('list_crismandos', msg= "Turmas Redistribuidas com sucesso!"))
 
         #  REDISTRIBUIÇÃO EQUILIBRADA (round-robin aleatório)
@@ -449,7 +474,7 @@ def save_attendance():
                 """, (crismando_id, meeting_id, status))
         
         conn.commit()
-    
+        atualizar_dashboard_async()
     return redirect(url_for('home_page'))
 
 @app.post("/saveattendanceedit")
@@ -484,7 +509,7 @@ def save_attendance_edit():
                 """, (crismando_id, meeting_id, status))
         
         conn.commit()
-    
+        atualizar_dashboard_async()
     return redirect(url_for('edit_attendance'))
 
 @app.get('/editattendance')

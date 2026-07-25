@@ -25,7 +25,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Icone de aleatoriedade-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   </head>
 
   <body>
@@ -44,6 +43,7 @@
         <button class="button-logout">Sair</button>
       </form>
     </header>
+
 <main>
 <div id="container-principal">
 
@@ -65,24 +65,18 @@
       </form>
     </dialog>
 
-
-    <!-- Nesse modal eu pego a requisição get que lista as turmas e seleciono id do novo crismando usando o JINJA onde
-     tem um select somente, e dentro dele um for que gera opçoes de acordo com os id da turmas, aparecendo pros usuários o nome delas -->
     <dialog id="modaleditcrismandos">
       {% if turmas %}
       <form action="{{ url_for('add_crismandos') }}" method="post">
-
         <label for="add">Adicionar Novo crismando:</label>
         <input type="text" name="add" />
 
         <label for="turma_id"> Selecione a turma do crismando:</label>
         <select name="turma_id" required>
-
           <option value="" selected disabled>Selecione</option>
           {% for turma in turmas %}
           <option value="{{ turma.id }}">{{ turma.turma_name }}</option>
           {% endfor %}
-
         </select>
         <input type="submit" value="Pronto!" />
       </form>
@@ -102,10 +96,7 @@
                 </tr>
             </thead>
             <tbody>
-            <!-- Inicializa o contador como lista -->
-            {# Jinja não consegue mudar uma variável global dentro de um loop, mas listas ele consegue #}
             {% set counter = [0] %}
-              <!-- o sort ordena os crismandos em ordem alfabética -->
                 {%for crismando in crismandos | sort(attribute='name')%}
                     {% if crismando.turma_id == turma.id %}
                     {% set _ = counter.append(counter.pop() + 1) %}
@@ -113,8 +104,8 @@
                             <td>{{counter[0]}}</td>
                             <td>{{crismando.name}}</td>
                             <td>
-                              <!-- aqui eu puxo o ícone da caneta -->
-                                <button onclick="OpenEditCrismandos({{crismando.id}})"><i class="fas fa-pencil-alt"></i></button>
+                                <!-- Passando ID e Nome para a função JS -->
+                                <button onclick="OpenEditCrismandos('{{crismando.id}}', '{{crismando.name}}')"><i class="fas fa-pencil-alt"></i></button>
                             </td>
                         </tr>
                     {%endif%}
@@ -125,12 +116,12 @@
     </main>
     </div>
 
-<!-- tava abrindo só o dialog do primeiro crismando, erro no loop, agora é um unico dialog -->
-<!-- Diálogo global, único -->
 <dialog id="modaledit-global">
-  <!-- Formulário de troca de turma -->
+  <!-- Exibição do nome do crismando para confirmação -->
+  <p>Editando: <strong id="nome-crismando-display"></strong></p>
+  
   <form id="form-switch" action="{{ url_for('switch_turma') }}" method="post">
-  <p>Selecione a nova turma do crismando e confirme:</p>
+  <p>Selecione a nova turma:</p>
     <select name="switch-turma">
       {% for t in turmas %}
         <option value="{{ t.id }}">{{ t.turma_name }}</option>
@@ -140,11 +131,11 @@
     <input type="submit" value="Trocar">
   </form>
 
-  <!-- Formulário de exclusão -->
   <form id="form-delete" method="post">
     <button type="button" onclick="OpenModalDeleteCrismando()">Excluir Crismando</button>
     <dialog id="deletecrismandoconfirmation">
-      <p>OBS: Esta ação é irrreversivel</p>
+      <p>Tem certeza que deseja excluir <strong><span id="nome-crismando-delete"></span></strong>?</p>
+      <p>OBS: Esta ação é irreversível</p>
         <button type="submit">SIM</button>
         <button type="button" id="btnn" onclick="CloseModalDeleteCrismando()">NÃO</button>
     </dialog>

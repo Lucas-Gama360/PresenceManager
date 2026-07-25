@@ -1,38 +1,324 @@
-/* Estilos específicos para addturmas.html */
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS PARA TURMAS
+   ========================================================================== */
 
-/* Estilo para o botão "Criar Turma" */
-.container-principal > button {
+:root {
+    --marrom-logo: #9B6230;
+    --marrom-dark: #9B6230;
+    --marrom-light: #fdf8f4;
+    --red-danger: #e63946;
+    --red-hover: #c52a36;
+    --bg-card: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #2d3748;
+    --text-secondary: #718096;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7fafc;
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+}
+
+/* Container Principal Limitado para Não Ocupar a Tela Toda */
+.container-principal {
+    max-width: 900px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Cabeçalho da Página */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.page-header h2 {
+    font-size: 1.6rem;
+    color: var(--marrom-logo);
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Botão Principal */
+.btn-primary {
     background-color: var(--marrom-logo);
     color: white;
     border: none;
-    border-radius: 25px;
-    padding: 12px 25px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background-color 0.3s, transform 0.3s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.container-principal > button:hover {
-    background-color: #7a4e27; /* Tom um pouco mais escuro */
-    transform: translateY(-2px);
-}
-
-/* Estilo para a mensagem de feedback (msg turmas) */
-.message-turmas {
-    background-color: #e6ffe6; /* Fundo verde claro para sucesso */
-    color: #006600; /* Texto verde escuro */
-    border: 1px solid #00cc00;
-    padding: 10px 20px;
     border-radius: 8px;
-    margin-bottom: 15px;
+    padding: 10px 20px;
+    font-size: 15px;
     font-weight: 500;
-    text-align: center;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
-/* Estilos para o formulário dentro do modal (form-modal) */
+.btn-primary:hover {
+    background-color: var(--marrom-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Mensagem de Feedback */
+/* Mensagem de Feedback Visível e Destacada */
+.message-turmas {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #d4edda; /* Fundo verde claro */
+    color: #155724;            /* Texto verde escuro */
+    border: 1px solid #c3e6cb; /* Borda sutil */
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+/* Estado Vazio */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* Layout de Turmas Responsivo */
+.turmas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+.turma-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    flex: 1 1 400px; /* Adapta o tamanho mínimo para 400px antes de dobrar de linha */
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.turma-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: var(--marrom-light);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.turma-card-header h3 {
+    margin: 0;
+    color: var(--marrom-logo);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Botão Excluir no Header do Card */
+.btn-delete-icon {
+    background-color: transparent;
+    color: var(--red-danger);
+    border: 1px solid var(--red-danger);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-delete-icon:hover {
+    background-color: var(--red-danger);
+    color: white;
+}
+
+/* Estilo da Tabela */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabela-turmas {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabela-turmas th {
+    background-color: #fafafa;
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tabela-turmas td {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.tabela-turmas tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-turmas tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+.col-number {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.empty-table {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DOS MODAIS (<dialog>) - MANTIDO INTATOS
+   ========================================================================== */
+
+/* Fundo escurecido atrás dos modais */
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+}
+
+.modal-card {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-card[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.form-modal, 
+.modal-confirm form {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-modal h3, 
+.modal-confirm h3 {
+    margin: 0;
+    color: var(--marrom-logo);
+    font-size: 1.25rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.input-group input {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--marrom-logo);
+}
+
+/* Botões do Modal */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-cancel:hover {
+    background-color: #f7fafc;
+}
+
+.btn-confirm {
+    background: var(--marrom-logo);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-confirm:hover {
+    background: var(--marrom-dark);
+}
+
+.btn-danger {
+    background: var(--red-danger);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-danger:hover {
+    background: var(--red-hover);
+}
+
+.warning-text {
+    font-size: 12px;
+    color: var(--red-danger);
+    margin: 0;
+}
 .form-modal {
     display: flex;
     flex-direction: column;
@@ -117,43 +403,11 @@
     background-color: #cc0000;
     transform: scale(1.05);
 }
-
-/* Ajuste para o cabeçalho da tabela (th) para alinhar o botão */
-/* O HTML usa duas <th> separadas dentro de <tr>.
-   O problema é que o <thead> é repetido para cada turma, o que é semanticamente incorreto.
-   No entanto, para o layout funcionar com a estrutura atual, vamos garantir que as <th> se comportem como células de tabela normais.
-   A estrutura é: <tr> <th>Nome</th> <th>Botão</th> </tr>
-   Como o HTML já separa o nome e o botão em duas <th> distintas, o problema de "aparecer abaixo"
-   só ocorreria se a largura da tabela fosse muito pequena ou se o display: flex estivesse sendo aplicado
-   de forma incorreta.
-
-   O CSS anterior estava tentando usar flexbox em <th>, o que é desnecessário e incorreto
-   para a estrutura de duas <th>.
-
-   Vamos remover o CSS incorreto e adicionar um estilo para a centralização vertical
-   do conteúdo das células (th/td) e garantir que o botão EXCLUIR fique no canto direito da sua célula.
-*/
-
-.tabela-turmas th, .tabela-turmas td {
-    vertical-align: middle; /* Centraliza verticalmente o conteúdo da célula */
-}
-
-.tabela-turmas th:last-child, .tabela-turmas td:last-child {
-    text-align: right; /* Alinha o botão de excluir à direita */
-}
-
-.tabela-turmas th:first-child {
-    width: 80%; /* Dá mais espaço para o nome da turma */
-}
-
-.tabela-turmas th:last-child {
-    width: 20%; /* Espaço para o botão */
-}
 /* =============================== */
-/*      MODAL DE CONFIRMAÇÃO       */
+/* MODAL DE CONFIRMAÇÃO       */
 /* =============================== */
 
-#modalconfirmation {
+.modal-confirm {
     /* Estilo base do dialog */
     padding: 0;
     border: none;
@@ -165,7 +419,7 @@
 }
 
 /* Centralização quando o modal está aberto */
-#modalconfirmation[open] {
+.modal-confirm[open] {
     position: fixed; /* Fixa o modal na viewport, não na página */
     top: 50%; /* Move o topo do modal para 50% da altura da tela */
     left: 50%; /* Move a esquerda do modal para 50% da largura da tela */
@@ -173,7 +427,7 @@
 }
 
 /* Estilo do conteúdo interno (o formulário) */
-#modalconfirmation form {
+.modal-confirm form {
     /* Usamos Grid para organizar o texto e os botões */
     display: grid;
     grid-template-areas: 
@@ -185,7 +439,7 @@
 }
 
 /* Estilo do parágrafo de aviso */
-#modalconfirmation p {
+.modal-confirm p {
     grid-area: text; /* Aplica a área definida no grid */
     font-size: 1.1em;
     font-weight: 600;
@@ -195,7 +449,7 @@
 }
 
 /* Estilo dos botões */
-#modalconfirmation button {
+.modal-confirm button {
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 16px;
@@ -207,51 +461,47 @@
 }
 
 /* Botão SIM (Ação destrutiva) */
-#modalconfirmation button[type="submit"] {
+.modal-confirm button[type="submit"] {
     grid-area: sim; /* Aplica a área definida no grid */
     background-color: #cc0000; /* Vermelho para deletar */
     color: white;
 }
 
-#modalconfirmation button[type="submit"]:hover {
+.modal-confirm button[type="submit"]:hover {
     background-color: #a00000;
 }
 
 /* Botão NÃO (Ação de cancelar) */
-#modalconfirmation button[type="button"] {
+.modal-confirm button[type="button"] {
     grid-area: nao; /* Aplica a área definida no grid */
     background-color: #f0f0f0; /* Cinza claro */
     color: #333;
     border: 1px solid #ccc;
 }
 
-#modalconfirmation button[type="button"]:hover {
+.modal-confirm button[type="button"]:hover {
     background-color: #e0e0e0;
 }
 
-/* Media Query para responsividade */
+/* Responsividade de Telas Menores */
 @media (max-width: 600px) {
-    .container-principal > button {
-        padding: 10px 20px;
-        font-size: 16px;
+    .container-principal {
+        padding: 0 10px;
+        margin: 15px auto;
     }
 
-    .form-modal {
-        padding: 20px;
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
 
-    .form-modal label {
-        font-size: 1em;
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
     }
 
-    .form-modal input[type="submit"],
-    .form-modal button[type="button"] {
-        font-size: 16px;
-        padding: 10px;
-    }
-
-    .tabela-turmas button[type="submit"] {
-        padding: 6px 10px;
-        font-size: 12px;
+    .turma-card {
+        flex: 1 1 100%;
     }
 }

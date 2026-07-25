@@ -23,72 +23,122 @@
     />
 </head>
 <body>
-<header>
+    <header>
       <div class="header-left">
         <img
           src="{{url_for('static', filename='images/logocrismamaior.png')}}"
           alt="Logo da crisma"
           class="logo"
         />
-        <h1 class="title-center" onclick="window.location.href='/homepage'" >Chamada da Crisma</h1>
+        <h1 class="title-center" onclick="window.location.href='/homepage'">Chamada da Crisma</h1>
       </div>
       <form action="{{url_for('logout_user')}}" method="post">
         <button class="button-logout">Sair</button>
       </form>
     </header>
-<!-- No main é renderizado a tabela usando jinja que usa um for com base na variavel turmas enviada pelo app.py -->
+
 <main>
     <div class="container-principal">
-    <dialog id="modalturmas">
-        <form action="{{ url_for('create_turma') }}" method="post" class="form-modal">
+        
+        <dialog id="modalturmas" class="modal-card">
+            <form action="{{ url_for('create_turma') }}" method="post" class="form-modal">
             <label for="name">Digite o Nome da nova turma</label>
             <input type="text" name="name">
 
             <input type="submit" value="criar">
             <button onclick="CloseModalTurmas()" type="button" >Fechar</button>
-        </form>
-    </dialog>
-    {% if msgturmas %}
-            <p class="message-turmas">{{ msgturmas }}</p>
-    {% endif %}
+                </div>
+            </form>
+        </dialog>
+
+        {% if msgturmas %}
+            <div class="message-turmas">{{ msgturmas }}</div>
+        {% endif %}
+
+        <div class="page-header">
             <h2>Turmas Cadastradas</h2>
-            <button onclick="OpenModalTurmas()">Criar Turma</button> <!--BOTAO QUE ABRE MODAL, COLOQUEI AQUI POR ESTÉTICA-->
-            {% if turmas %}
-{% for turma in turmas %}
-    <table class="tabela-turmas">
-        <thead>
-<thead>
-        <tr> <th>{{turma.turma_name}}</th>
-            <th>
-                <button type="button" onclick="OpenModalConfirmation()" id="openmodalconfirmation">EXCLUIR</button>
-                <dialog id="modalconfirmation">
-                    <form action="{{ url_for('delete_turma', turma_id = turma.id , nome=turma.turma_name) }}" method="post">
-                        <p> OBS: Esta ação é irreversível</p>
-                        <button type="submit">SIM</button>
-                        <button type="button" onclick="CloseModalConfirmation()">NÃO</button>                            
-                    </form>
-                </dialog>
-            </th>
-        </tr> 
-      </thead>
-        <tbody>
-          {% set counter = [0] %}
-            {%for crismando in crismandos | sort(attribute='name')%}
-                 {% if crismando.turma_id == turma.id %}
-                    {% set _ = counter.append(counter.pop() + 1) %}
-                 <tr>
-                    <td>{{counter[0]}}</td>
-                     <td>{{crismando.name}}</td> 
-                  </tr>
-                 {%endif%}
-             {%endfor%}
-        </tbody>
-    </table>
-{% endfor %}
-            {% else %}
+            <button class="btn-primary" onclick="OpenModalTurmas()">
+                <span>+</span> Criar Turma
+            </button>
+        </div>
+
+        {% if turmas %}
+            <div class="turmas-grid">
+                {% for turma in turmas %}
+                    <div class="turma-card">
+                        <div class="turma-card-header">
+                            <h3>{{ turma.turma_name }}</h3>
+                            
+                            <button type="button" class="btn-delete-icon" onclick="OpenModalConfirmation('{{ turma.id }}')">
+                                Excluir
+                            </button>
+
+                            <dialog id="modalconfirmation-{{ turma.id }}" class="modal-card modal-confirm">
+                                <form action="{{ url_for('delete_turma', turma_id=turma.id, nome=turma.turma_name) }}" method="post">
+                                <p> OBS: Esta ação é irreversível</p>
+                                <button type="submit">Exluir</button>
+                                <button type="button" onclick="CloseModalConfirmation('{{ turma.id }}')">Cancelar</button>
+                                  
+                                </form>
+                            </dialog>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="tabela-turmas">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%;">#</th>
+                                        <th style="width: 85%;">Nome do Crismando</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set counter = [0] %}
+                                    {% for crismando in crismandos | sort(attribute='name') %}
+                                        {% if crismando.turma_id == turma.id %}
+                                            {% set _ = counter.append(counter.pop() + 1) %}
+                                            <tr>
+                                                <td class="col-number">{{ counter[0] }}</td>
+                                                <td>{{ crismando.name }}</td> 
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if counter[0] == 0 %}
+                                        <tr>
+                                            <td colspan="2" class="empty-table">Nenhum crismando associado a esta turma.</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
                 <p>Nenhuma turma cadastrada ainda.</p>
-            {% endif %}
+            </div>
+        {% endif %}
+    </div>
 </main>
-<script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+
+<script>
+    function OpenModalTurmas() {
+        document.getElementById('modalturmas').showModal();
+    }
+    function CloseModalTurmas() {
+        document.getElementById('modalturmas').close();
+    }
+
+    function OpenModalConfirmation(id) {
+        const modal = document.getElementById('modalconfirmation-' + id);
+        if (modal) modal.showModal();
+    }
+
+    function CloseModalConfirmation(id) {
+        const modal = document.getElementById('modalconfirmation-' + id);
+        if (modal) modal.close();
+    }
+</script>
 </body>
 </html>

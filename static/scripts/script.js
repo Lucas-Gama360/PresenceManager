@@ -122,3 +122,40 @@ function closeEditModal() {
     const modal = document.getElementById('deletesystem');
     modal.close();
 }
+    // Funções do Modal Global de Edição
+    const modalEditGlobal = document.getElementById('modaledit-global');
+    const inputId = document.getElementById('crismando-id-input');
+    const displayNome = document.getElementById('nome-crismando-display');
+    const deleteNome = document.getElementById('nome-crismando-delete');
+    const formDelete = document.getElementById('form-delete');
+
+    function OpenEditCrismandos(id, nome) {
+        inputId.value = id;
+        displayNome.textContent = nome;
+        deleteNome.textContent = nome;
+        
+        // Atualiza a rota de exclusão se necessário (exemplo baseando na lógica anterior)
+        // Se a sua rota for /deletecrismando/<id>, você pode setar aqui:
+        // formDelete.action = "/deletecrismando/" + id;
+        
+        modalEditGlobal.showModal();
+    }
+
+    function CloseEditCrismandos() {
+        modalEditGlobal.close();
+    }
+
+    // Modal de Confirmação de Exclusão
+    const modalDelete = document.getElementById('deletecrismandoconfirmation');
+    function OpenModalDeleteCrismando() {
+        modalDelete.showModal();
+    }
+    function CloseModalDeleteCrismando() {
+        modalDelete.close();
+    }
+
+    // Outros modais
+    function OpenModalEditCrismandos() { document.getElementById('modaleditcrismandos').showModal(); }
+    function CloseModalEditCrismandos() { document.getElementById('modaleditcrismandos').close(); }
+    function OpenRandomModal() { document.getElementById('modalconfirmation2').showModal(); }
+    function CloseRandomModal() { document.getElementById('modalconfirmation2').close(); }
