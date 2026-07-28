@@ -1,6 +1,6 @@
 function Openmodalmasterpassword(event){
     // 1. OBRIGATÓRIO: Impede que o formulário seja submetido imediatamente
-    event.preventDefault(); 
+    event.preventDefault();
     // aqui é definido para os inputs ocultos do modal receberem o valor do input principal, assim quando chamar no app.py irá funcionar, por ser forms diferentes. O primeiro se torna "visual"
     const nome = document.form1.nome.value
     const senha = document.form1.senha.value
@@ -22,7 +22,7 @@ function OpenModalTurmas(){
 }
 function CloseModalTurmas(){
     const modal = document.getElementById("modalturmas")
-    modal.close(); 
+    modal.close();
 }
 function OpenModalEditCrismandos(){
     const modal = document.getElementById("modaleditcrismandos")
@@ -30,31 +30,16 @@ function OpenModalEditCrismandos(){
 }
 function CloseModalEditCrismandos(){
     const modal = document.getElementById("modaleditcrismandos")
-    modal.close(); 
+    modal.close();
 }
 function OpenModalConfirmation(){
     const modal = document.getElementById("modalconfirmation")
-    modal.showModal();   
+    modal.showModal();
 }
 function CloseModalConfirmation(){
     const modal = document.getElementById("modalconfirmation")
-    modal.close();   
+    modal.close();
 }
-function OpenEditCrismandos(crismandoId) {
-  const dialog = document.getElementById('modaledit-global');
-  const inputCrismandoId = document.getElementById('crismando-id-input');
-  const deleteForm = document.getElementById('form-delete-crismando');
-
-  // Define o ID do crismando no formulário de troca
-  inputCrismandoId.value = crismandoId;
-
-  // 2. Define onde o formulário de exclusão vai enviar
-  document.getElementById('form-delete').action = `/deletecrismandos/${crismandoId}`;
-
-  // 3. Abre o diálogo
-  document.getElementById('modaledit-global').showModal();
-}
-
 function CloseEditCrismandos() {
   const dialog = document.getElementById('modaledit-global');
   dialog.close();
@@ -90,19 +75,19 @@ function CloseModalEditMeeting(){
 }
 function Openmodalchamada(){
     const modal = document.getElementById('modalchamada')
-    modal.showModal() 
+    modal.showModal()
 }
 function Closemodalchamada(){
     const modal = document.getElementById('modalchamada')
-    modal.close() 
+    modal.close()
 }
 function OpenModalDeleteCrismando(){
     const modal = document.getElementById('deletecrismandoconfirmation')
-    modal.showModal()   
+    modal.showModal()
 }
 function CloseModalDeleteCrismando(){
     const modal = document.getElementById('deletecrismandoconfirmation')
-    modal.close()   
+    modal.close()
 }
 function openEditModal(id, tema) {
     const modal = document.getElementById('modalEscolhaTurma');
@@ -126,18 +111,14 @@ function closeEditModal() {
     const modalEditGlobal = document.getElementById('modaledit-global');
     const inputId = document.getElementById('crismando-id-input');
     const displayNome = document.getElementById('nome-crismando-display');
-    const deleteNome = document.getElementById('nome-crismando-delete');
     const formDelete = document.getElementById('form-delete');
 
     function OpenEditCrismandos(id, nome) {
         inputId.value = id;
         displayNome.textContent = nome;
-        deleteNome.textContent = nome;
-        
-        // Atualiza a rota de exclusão se necessário (exemplo baseando na lógica anterior)
-        // Se a sua rota for /deletecrismando/<id>, você pode setar aqui:
-        // formDelete.action = "/deletecrismando/" + id;
-        
+
+        formDelete.action = "/deletecrismandos/" + id;
+
         modalEditGlobal.showModal();
     }
 
