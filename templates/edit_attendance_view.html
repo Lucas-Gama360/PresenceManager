@@ -45,6 +45,7 @@
                             <td>{{ item.name }}</td>
                             <td>
                                 <select name="status_{{ item.id }}">
+                                    <option value="" {% if item.status is none %}selected{% endif %} disabled>-</option>
                                     <option value="0" {% if item.status == 0 %}selected{% endif %}>P</option>
                                     <option value="1" {% if item.status == 1 %}selected{% endif %}>F</option>
                                     <option value="2" {% if item.status == 2 %}selected{% endif %}>FJ</option>

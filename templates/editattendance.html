@@ -96,6 +96,7 @@
                 <p>Escolha a turma que deseja editar:</p>
                 <select name="turma_id" required>
                     <option value="" disabled selected>Selecione...</option>
+                    <option value="geral">Chamada Geral</option>
                     {% for turma in turmas %}
                     <option value="{{ turma.id }}">{{ turma.turma_name }}</option>
                     {% endfor %}

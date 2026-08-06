@@ -574,18 +574,38 @@ def edit_attendance_view():
         cur.execute("SELECT id, tema, meeting_date FROM meetings WHERE id = ?", (encontro_id,))
         encontro = cur.fetchone()
         
-        cur.execute("SELECT id, turma_name FROM turmas WHERE id = ?", (turma_id,))
-        turma = cur.fetchone()
-        
-        # O LEFT JOIN busca o aluno mesmo que ele ainda não tenha presença marcada
-        cur.execute("""
-            SELECT c.id, c.name, a.status 
-            FROM crismandos c
-            LEFT JOIN attendance a ON c.id = a.crismando_id AND a.meeting_id = ?
-            WHERE c.turma_id = ?
-            ORDER BY c.name
-        """, (encontro_id, turma_id))
-        lista_presenca = cur.fetchall()
+        if turma_id == "geral":
+            turma = {
+            "id": None,
+            "turma_name": "Chamada Geral"
+            }
+
+            cur.execute("""
+                SELECT c.id, c.name, a.status
+                FROM crismandos c
+                LEFT JOIN attendance a
+                ON c.id = a.crismando_id
+                AND a.meeting_id = ?
+                ORDER BY c.name
+                """, (encontro_id,))
+            lista_presenca = cur.fetchall()
+        else:
+            cur.execute(
+            "SELECT id, turma_name FROM turmas WHERE id = ?",(turma_id,)
+            )
+            turma = cur.fetchone()
+
+            cur.execute("""
+                SELECT c.id, c.name, a.status
+                FROM crismandos c
+                LEFT JOIN attendance a
+                ON c.id = a.crismando_id
+               AND a.meeting_id = ?
+                WHERE c.turma_id = ?
+                ORDER BY c.name
+                """, (encontro_id, turma_id))
+
+            lista_presenca = cur.fetchall()
 
     return render_template('edit_attendance_view.html', 
                            encontro=encontro, 
